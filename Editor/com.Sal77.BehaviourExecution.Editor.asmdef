@@ -2,8 +2,8 @@
     "name": "com.Sal77.BehaviourExecution.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:b7397d46f09432e41a606032548e847b",
-        "GUID:e9dd523622013c54794126e40f14e911"
+        "com.Sal77.Core.Runtime",
+        "com.Sal77.BehaviourExecution.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

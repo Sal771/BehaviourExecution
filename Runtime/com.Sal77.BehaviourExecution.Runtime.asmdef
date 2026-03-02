@@ -2,7 +2,7 @@
     "name": "com.Sal77.BehaviourExecution.Runtime",
     "rootNamespace": "",
     "references": [
-        "GUID:e9dd523622013c54794126e40f14e911"
+        "com.Sal77.Core.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
