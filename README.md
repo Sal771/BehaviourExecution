@@ -1,10 +1,8 @@
-# BehaviourExecution
-
-## Overview
+# Overview
 
 ## Examples
 
-### First Behaviour - Hello behaviour
+## First Behaviour - Hello behaviour
 
 Creating Behaviour
 Setup Runner
@@ -13,12 +11,12 @@ Executing Behaviour
 No event
 Debug Log Action
 
-### Interacting with scene objects - Collecting coins
+## Interacting with scene objects - Collecting coins
 
 Get Random Coins Action
 Move To Coin Action
 
-### Condition checking - Shooting coins
+## Condition checking - Shooting coins
 
 Coin Hunt Scene
 Cube Controller
@@ -27,15 +25,15 @@ If Conditions
 
 Get Distance From Coin
 
-### Changing behaviour data numbers - Upgradeable Gun
+## Changing behaviour data numbers - Upgradeable Gun
 
 Reading Behaviour Object Details
 
-### Occurrence through event triggers - Exploding coins
+## Occurrence through event triggers - Exploding coins
 
 On Coin Collect Event
 
-### Character AI - Buying groceries with all those coins
+## Character AI - Buying groceries with all those coins
 
 Home
 
@@ -48,12 +46,12 @@ A behaviour object for milk, cheese, coins and a extra set as next object 'Choos
 
 Behaviour State Machine
 
-### Long linear executions - Chatting with the cube and its quests
+## Long linear executions - Chatting with the cube and its quests
 
 Quest UI
 Chat UI
 
-###  Working with Game Stats - Training the cube with running and shockwaves
+##  Working with Game Stats - Training the cube with running and shockwaves
 
 Gym
 Race Track
