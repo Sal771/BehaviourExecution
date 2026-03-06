@@ -102,7 +102,7 @@ namespace com.Sal77.BehaviourExecution
         }
         public void Setup()
         {
-            foreach(var variable in m_behaviourObject.BehaviourVariables)
+            /*foreach(var variable in m_behaviourObject.BehaviourVariables)
             {
                 DefineVariable(variable.Name, variable.Type);
             }
@@ -123,7 +123,7 @@ namespace com.Sal77.BehaviourExecution
                 {
                     actionPair.Value.NextAction = actionCache[nextAction];
                 }
-            }
+            }*/
         }
 
         public void Reset()
@@ -133,7 +133,7 @@ namespace com.Sal77.BehaviourExecution
 
         public void Reset(Type eventType, params object[] eventParams)
         {
-            var behaviourEvent = m_behaviourObject.BehaviourEvents.First(x => x.GetType() == eventType);
+            /*var behaviourEvent = m_behaviourObject.BehaviourEvents.First(x => x.GetType() == eventType);
 
             var eventSourceVariables = behaviourEvent.SourceVariables;
 
@@ -155,7 +155,7 @@ namespace com.Sal77.BehaviourExecution
             if (m_executionActions.Count > 0)
             {
                 m_currentAction = m_executionActions[0];
-            }
+            }*/
         }
 
         public void Update()

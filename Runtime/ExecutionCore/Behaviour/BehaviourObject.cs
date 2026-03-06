@@ -8,9 +8,9 @@ using com.Sal77.GameCore;
 namespace com.Sal77.BehaviourExecution
 {
     [CreateAssetMenu(fileName = "New Behaviour Object", menuName = "Behaviour Object")]
-    public class BehaviourObject : ScriptableObject, IBehaviourVariable
+    public class BehaviourObject : ScriptableObject
     {
-        public BehaviourEvent[] BehaviourEvents => m_behaviourEvents.ToArray();
+        /*public BehaviourEvent[] BehaviourEvents => m_behaviourEvents.ToArray();
         [SerializeReference] private List<BehaviourEvent> m_behaviourEvents = new();
         public BehaviourConstant[] BehaviourConstants => m_behaviourConstants.ToArray();
         [SerializeReference] private List<BehaviourConstant> m_behaviourConstants = new();
@@ -474,6 +474,6 @@ namespace com.Sal77.BehaviourExecution
         private enum BehaviourSourceMode{
             Variable,
             Binding
-        }
+        }*/
     }
 }

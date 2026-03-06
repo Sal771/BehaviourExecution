@@ -11,7 +11,7 @@ using System.IO;
 
 [CustomEditor(typeof(BehaviourObject))]
 public class BehaviourObjectEditor : Editor
-{
+{/*
     private BehaviourObject m_behaviourObject;
     private ShowType m_showType = ShowType.Variable;
     private int m_eventsPopupIndex = 0;
@@ -454,7 +454,7 @@ public class BehaviourObjectEditor : Editor
     {
         Variable,
         Actions,
-    }
+    }*/
 }
 
 #endif
