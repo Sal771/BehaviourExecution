@@ -6,9 +6,9 @@ using com.Sal77.BehaviourExecution;
 [BehaviourCategory("Variables/Get Stat")]
 public class GetStatAction : BehaviourAction
 {
-    public override void DefineBindings(IBehaviourVariable actionContext)
+    protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        
+        throw new NotImplementedException();
     }
 
     protected override string GetActionName()

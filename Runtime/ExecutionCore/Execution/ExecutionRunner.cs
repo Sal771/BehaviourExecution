@@ -29,9 +29,9 @@ namespace com.Sal77.BehaviourExecution
         {
             var executionObject = new ExecutionObject(behaviourObject, eventType, eventParams);
 
-            /*if (executionObject.BehaviourObject.BehaviourActions.Length == 0) return;
+            if (executionObject.BehaviourObject.BehaviourActions.Length == 0) return;
             m_executionObjects.Add(executionObject);
-            executionObject.Update();*/
+            executionObject.Update();
         }
         public void StopExecute(ExecutionObject executionObject)
         {

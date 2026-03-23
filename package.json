@@ -1,14 +1,11 @@
 {
   "name": "com.sal77.behaviourexecution",
   "displayName": "Behaviour Execution",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Custom behaviour execution system.",
   "unity": "6000.2",
   "author": {
     "name": "Sal77"
   },
-  "unityRelease": "7f2",
-  "dependencies": {
-    "com.sal77.gamecore": "0.1.0"
-  }
+  "unityRelease": "7f2"
 }

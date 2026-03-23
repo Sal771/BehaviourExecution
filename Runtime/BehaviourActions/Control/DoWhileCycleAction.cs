@@ -4,7 +4,7 @@ using com.Sal77.BehaviourExecution;
 [BehaviourCategory("Control/Do While")]
 public class DoWhileCycleAction : BehaviourAction
 {
-    public override void DefineBindings(IBehaviourVariable actionContext)
+    protected override void DefineBindings(IBehaviourAction actionContext)
     {
         
     }

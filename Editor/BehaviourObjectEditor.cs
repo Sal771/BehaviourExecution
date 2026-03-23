@@ -1,5 +1,3 @@
-#if UNITY_EDITOR
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,452 +7,433 @@ using com.Sal77.BehaviourExecution;
 using com.Sal77.GameCore;
 using System.IO;
 
+//TODO variable renaming
+//TODO Drag n Scroll
+//TODO Section title
+
 [CustomEditor(typeof(BehaviourObject))]
 public class BehaviourObjectEditor : Editor
-{/*
-    private BehaviourObject m_behaviourObject;
-    private ShowType m_showType = ShowType.Variable;
-    private int m_eventsPopupIndex = 0;
-    private int m_actionsPopupIndex = 0;
-    private int m_typePopupIndex = 0;
-    private int m_constantSortOptionIndex = 0;
-    private int m_variableSortOptionIndex = 0;
-    private int m_actionRetargetOptionIndex = 0;
-    private string m_creatingConstantName;
-    private BehaviourVariable m_renamingVariable;
-    private BehaviourBinding m_retargetingBinding;
-    private bool m_baseEditorToggle = false;
+{
+    private bool m_instructionsFoldout;
+    private int m_selectedActionIndex;
+    private List<BehaviourAction> m_selectedActions = new();
+    private BehaviourExecutionThemeConfig m_themeConfig;
 
-
-    void OnEnable()
+    public class BehaviourActionDrag
     {
-        m_behaviourObject = (BehaviourObject)target;
+        public BehaviourAction behaviourAction;
     }
+
     public override void OnInspectorGUI()
     {
-        DrawStartSection();
-        EditorGUILayout.Space(30);
+        if(m_themeConfig == null)
+        {
+            m_themeConfig = BehaviourEditorUtility.GetThemeConfig();
+        }
 
-        if (m_showType == ShowType.Variable)
+        BehaviourObject behaviourObject = (BehaviourObject)target;
+        BehaviourActionBuffer behaviourActionBuffer = behaviourObject.BehaviourActionBuffer;
+
+        //Instructions Box
+
+        GUI.backgroundColor = m_themeConfig.Background1Color;
+        EditorGUILayout.BeginVertical(m_themeConfig.InstructionStyle);
+
+        GUI.backgroundColor = m_themeConfig.Details1Color;
+        m_instructionsFoldout = EditorGUILayout.Foldout(m_instructionsFoldout, "Instructions");
+
+        if (m_instructionsFoldout)
         {
-            DrawEventsSection();
-            EditorGUILayout.Space(30);
-            DrawConstantsSection();
-            EditorGUILayout.Space(30);
-            DrawVariablesSection();
-        } else
+            EditorGUILayout.LabelField(
+                "Expand width to read fully.\n\n"
+                +"BLACKBOARDS.\n\n"
+                +"EVENTS.\n\n"
+                +"ACTIONS.\n"
+            , GUILayout.Height(260));
+        }
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.Space();
+
+        //Blackboard Box
+
+        //Header
+        GUI.backgroundColor = m_themeConfig.Background2Color;
+        EditorGUILayout.BeginVertical(m_themeConfig.HeaderStyle);
+
+        EditorGUILayout.LabelField("Blackboards", m_themeConfig.HeaderStyle);
+
+        EditorGUILayout.EndVertical();
+
+        GUI.backgroundColor = m_themeConfig.Background1Color;
+        EditorGUILayout.BeginVertical(m_themeConfig.Background1Style, GUILayout.MinHeight(120));
+        EditorGUILayout.LabelField("");
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.Space();
+
+        //Events Box
+
+        //Header
+        GUI.backgroundColor = m_themeConfig.Background2Color;
+        EditorGUILayout.BeginVertical(m_themeConfig.HeaderStyle);
+
+        EditorGUILayout.LabelField("Events", m_themeConfig.HeaderStyle);
+
+        EditorGUILayout.EndVertical();
+
+        GUI.backgroundColor = m_themeConfig.Background1Color;
+        EditorGUILayout.BeginVertical(m_themeConfig.Background1Style, GUILayout.MinHeight(120));
+        EditorGUILayout.LabelField("");
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.Space();
+
+        //Actions Box
+
+        //Header
+        GUI.backgroundColor = m_themeConfig.Background2Color;
+        EditorGUILayout.BeginVertical(m_themeConfig.HeaderStyle);
+
+        EditorGUILayout.LabelField("Actions", m_themeConfig.HeaderStyle);
+
+        EditorGUILayout.EndVertical();
+
+        GUI.backgroundColor = m_themeConfig.Background1Color;
+        EditorGUILayout.BeginVertical(m_themeConfig.Background1Style, GUILayout.MinHeight(120));
+
+        EditorGUILayout.BeginHorizontal();
+
+        GUI.backgroundColor = m_themeConfig.Button1Color;
+        string[] actionscategorized = BehaviourUtility.AllAvailableActionsCategorized();
+        m_selectedActionIndex = EditorGUILayout.Popup(m_selectedActionIndex, actionscategorized);
+
+        if (GUILayout.Button("+"))
         {
-            DrawActionsSection();
+            Type actionType = BehaviourUtility.ActionTypeFromCategorized(actionscategorized[m_selectedActionIndex]);
+            BehaviourAction action = (BehaviourAction)ScriptableObject.CreateInstance(actionType);
+            action.name = actionType.Name + "_" + Guid.NewGuid();
+
+            AssetDatabase.AddObjectToAsset(action, behaviourObject);
+
+            behaviourActionBuffer.Add(action);
+
+            EditorUtility.SetDirty(behaviourObject);
+            AssetDatabase.SaveAssets();
+        }
+
+        GUI.enabled = false;
+
+        if (GUILayout.Button("C"))
+        {
+            //Copy
+        }
+
+        if (GUILayout.Button("P"))
+        {
+            //Paste
+        }
+
+        GUI.enabled = true;
+
+        EditorGUILayout.EndHorizontal();
+
+        DrawBehaviourActionBuffer(behaviourObject, behaviourActionBuffer);
+
+        EditorGUILayout.EndVertical();
+
+        //Drag Exit
+        if (Event.current.type == EventType.DragExited)
+        {
+            DragAndDrop.SetGenericData("Behaviour Action Drag", null);
+            this.Repaint();
+        }
+    }
+
+    private void DrawBehaviourActionBuffer(BehaviourObject behaviourObject, BehaviourActionBuffer behaviourActionBuffer)
+    {
+        Rect lastRect = GUILayoutUtility.GetLastRect(); ;
+        Rect indicatorRect;
+
+        BehaviourActionDrag currentActionDrag = (BehaviourActionDrag)DragAndDrop.GetGenericData("Behaviour Action Drag");
+
+        GUI.backgroundColor = m_themeConfig.Background1Color;
+        EditorGUILayout.BeginVertical(m_themeConfig.Background1Style);
+
+        var actions = behaviourObject.BehaviourActions;
+        for (int i = 0; i < actions.Length; i++)
+        {
+            var behaviourAction = actions[i];
+
+            if(currentActionDrag == null || currentActionDrag.behaviourAction != behaviourAction)
+            {
+                GUI.backgroundColor = m_themeConfig.Background2Color;
+            }
+            else
+            {
+                GUI.backgroundColor = m_themeConfig.Background2Color * 0.5f + m_themeConfig.ActionDragTint * 0.5f;
+            }
+            
+            EditorGUILayout.BeginVertical(m_themeConfig.Background2Style);
+
+            EditorGUILayout.BeginHorizontal();
+            
+            GUI.backgroundColor = m_themeConfig.ActionNameBackgroundColor;
+
+            EditorGUILayout.LabelField(behaviourAction.ActionName, m_themeConfig.ActionNameStyle);
+
+            GUI.backgroundColor = m_themeConfig.Button1Color;
+
+            if (GUILayout.Button("X", GUILayout.Width(40)))
+            {
+                int removeIndex = i;
+                UnityEngine.Object actionToRemove = behaviourAction;
+
+                behaviourActionBuffer.RemoveAt(removeIndex);
+
+                DestroyImmediate(actionToRemove, true);
+
+                EditorUtility.SetDirty(behaviourObject);
+                AssetDatabase.SaveAssets();
+
+                break;
+            }
+
+            EditorGUILayout.EndHorizontal();
+
+            DrawBehaviourActionBufferFields(behaviourAction);
+
+            EditorGUILayout.EndVertical();
+
+            if (BehaviourEditorUtility.LastRectClicked())
+            {
+                DragAndDrop.SetGenericData("Behaviour Action Drag", null);
+                this.Repaint();
+            }
+
+            if (BehaviourEditorUtility.LastRectDragStart())
+            {
+                DragAndDrop.PrepareStartDrag();
+                DragAndDrop.StartDrag("Behaviour Action Drag");
+
+                BehaviourActionDrag actionDrag = new();
+                actionDrag.behaviourAction = behaviourAction;
+
+                DragAndDrop.SetGenericData("Behaviour Action Drag", actionDrag);
+                this.Repaint();
+            }
+
+            //Before Indicator
+
+            lastRect = GUILayoutUtility.GetLastRect();
+
+            if(currentActionDrag != null)
+            {
+                indicatorRect = new Rect(lastRect.x, lastRect.y - 2, lastRect.width, 4);
+                var rectHitbox = new Rect(indicatorRect.x, indicatorRect.y-16, indicatorRect.width, 32);
+
+                if(rectHitbox.Contains(Event.current.mousePosition)) DrawIndicator(indicatorRect);
+
+                if (BehaviourEditorUtility.DropArea(rectHitbox, DragAndDropVisualMode.Move, null))
+                {
+                    int currentIndex = System.Array.IndexOf(behaviourObject.BehaviourActions, currentActionDrag.behaviourAction);
+                    int targetIndex;
+                    if (currentIndex < i)
+                    {
+                        targetIndex = i - 1;
+                    }
+                    else
+                    {
+                        targetIndex = i;
+                    }
+
+                    behaviourActionBuffer.InsertTo(currentActionDrag.behaviourAction, targetIndex);
+
+                    EditorUtility.SetDirty(behaviourObject);
+                    AssetDatabase.SaveAssets();
+
+                    DragAndDrop.SetGenericData("Behaviour Action Drag", null);
+                    this.Repaint();
+                }
+            }
+        }
+
+        if(currentActionDrag != null)
+        {
+            indicatorRect = new Rect(lastRect.x, lastRect.y + lastRect.height + 2, lastRect.width, 4);
+            var lastRectHitbox = new Rect(indicatorRect.x, indicatorRect.y-16, indicatorRect.width, 32);
+
+            if(lastRectHitbox.Contains(Event.current.mousePosition)) DrawIndicator(indicatorRect);
+
+            if (BehaviourEditorUtility.DropArea(lastRectHitbox, DragAndDropVisualMode.Move, null))
+            {
+                behaviourActionBuffer.InsertTo(currentActionDrag.behaviourAction, behaviourObject.BehaviourActions.Length);
+
+                EditorUtility.SetDirty(behaviourObject);
+                AssetDatabase.SaveAssets();
+
+                DragAndDrop.SetGenericData("Behaviour Action Drag", null);
+                this.Repaint();
+            }
+        }
+
+        EditorGUILayout.EndVertical();
+    }
+
+    private void DrawBehaviourActionBufferFields(BehaviourAction action)
+    {
+        action.UpdateBindings();
+
+        var allFields = new List<BehaviourActionField>();
+        
+        foreach (var variable in action.ActionVariables)
+        {
+            allFields.Add(variable);
         }
         
-        AssetDatabase.SaveAssetIfDirty(m_behaviourObject);
-
-        EditorGUILayout.Space(60);
-
-        m_baseEditorToggle = EditorGUILayout.Foldout(m_baseEditorToggle,"Base Editor (For Debug)");
-
-        if(m_baseEditorToggle)
+        foreach (var enumField in action.ActionEnums)
         {
-            base.OnInspectorGUI();
+            allFields.Add(enumField);
         }
+        
+        foreach (var buffer in action.ActionBuffers)
+        {
+            allFields.Add(buffer);
+        }
+        
+        foreach (var numberOption in action.ActionNumberOptions)
+        {
+            allFields.Add(numberOption);
+        }
+        
+        var sortedFields = allFields.OrderBy(f => f.OrderIndex).ToList();
+        
+        EditorGUILayout.BeginHorizontal();
+        int count = 0;
+        Type previousActionType = null;
+        
+        foreach (var field in sortedFields)
+        {
+            var actionType = GetBehaviourActionFieldType(field);
+
+            // New row every 2 fields
+            if (count == 2 || previousActionType != actionType)
+            {
+                count = 0;
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginHorizontal();
+            }
+
+            EditorGUILayout.BeginHorizontal();
+
+            switch(field)
+            {
+                case BehaviourActionVariable actionVariable:
+                    DrawActionVariable(actionVariable);
+                    break;
+
+                case BehaviourActionEnum actionEnum:
+                    DrawActionEnum(actionEnum);
+                    break;
+
+                case BehaviourActionBuffer actionBuffer:
+                    DrawActionBuffer(actionBuffer);
+                    break;
+
+                case BehaviourNumberOption numberOption:
+                    DrawNumberOption(numberOption);
+                    break;
+            };
+
+            EditorGUILayout.EndHorizontal();
+
+            count++;
+
+            previousActionType = actionType;
+        }
+
+        EditorGUILayout.EndHorizontal();
     }
 
-    private void DrawStartSection()
+    private Type GetBehaviourActionFieldType(BehaviourActionField actionField)
     {
-        GUIStyle titleStyle = new ();
-        titleStyle.fontStyle = FontStyle.Bold;
-        titleStyle.fontSize = 18;
-        titleStyle.fixedHeight = 18;
-        titleStyle.normal = new GUIStyleState()
+        switch(actionField)
         {
-            textColor = Color.white
+            case BehaviourActionVariable:
+                return typeof(BehaviourActionVariable);
+
+            case BehaviourActionEnum:
+                return typeof(BehaviourActionEnum);
+
+            case BehaviourActionBuffer:
+                return typeof(BehaviourActionBuffer);
+
+            case BehaviourNumberOption:
+                return typeof(BehaviourNumberOption);
         };
 
-        EditorGUILayout.LabelField(m_behaviourObject.name, titleStyle);
+        return null;
+    }
 
-        EditorGUILayout.Space(15);
+    private void DrawActionVariable(BehaviourActionVariable actionVariable)
+    {
+        GUI.backgroundColor = m_themeConfig.ActionFieldVariableBackgroundColor;
+        var width = EditorGUIUtility.currentViewWidth * m_themeConfig.FieldWidthRatio;
+        EditorGUILayout.BeginHorizontal(m_themeConfig.ActionFieldStyle, GUILayout.Width(width));
 
-        EditorGUILayout.BeginHorizontal();
+        var variableDisplayName = BehaviourUtility.DisplayNameFromType(actionVariable.VariableType);
 
-        if (GUILayout.Button("Variables", GUILayout.Width(120)))
-        {
-            m_showType = ShowType.Variable;
-        }
+        EditorGUILayout.LabelField($"{actionVariable.Name} [{variableDisplayName}]", GUILayout.Width(m_themeConfig.FieldLabelWidth));
 
-        if (GUILayout.Button("Actions", GUILayout.Width(120)))
-        {
-            m_showType = ShowType.Actions;
-        }
+        GUI.backgroundColor = m_themeConfig.Button1Color;
+
+        EditorGUILayout.Popup(0, new string[0]);
 
         EditorGUILayout.EndHorizontal();
     }
 
-    private void DrawEventsSection()
+    private void DrawActionEnum(BehaviourActionEnum actionEnum)
     {
-        EditorGUILayout.LabelField("Events");
+        GUI.backgroundColor = m_themeConfig.ActionFieldEnumBackgroundColor;
+        var width = EditorGUIUtility.currentViewWidth * m_themeConfig.FieldWidthRatio;
+        EditorGUILayout.BeginHorizontal(m_themeConfig.ActionFieldStyle, GUILayout.Width(width));
 
-        EditorGUILayout.Space();
+        EditorGUILayout.LabelField($"{actionEnum.Name}", GUILayout.Width(m_themeConfig.FieldLabelWidth));
 
-        EditorGUILayout.BeginHorizontal();
-
-        var eventsCategorized = BehaviourUtility.AllAvailableEventsCategorized();
-
-        m_eventsPopupIndex = EditorGUILayout.Popup(m_eventsPopupIndex ,eventsCategorized, GUILayout.Width(120));
-
-        if (GUILayout.Button("+", GUILayout.Width(30)) && eventsCategorized.Length > 0)
-        {
-            var selectedEventCategorized = eventsCategorized[m_eventsPopupIndex];
-            var selectedEventName = BehaviourUtility.EventNameFromCategorized(selectedEventCategorized);
-
-            var newEvent = BehaviourUtility.EventTypeFromName(selectedEventName);
-            m_behaviourObject.AddEvent(newEvent);
-        }
-
-        EditorGUILayout.Space();
-
+        GUI.backgroundColor = m_themeConfig.Button1Color;
+        actionEnum.CurrentOptionIndex = EditorGUILayout.Popup(actionEnum.CurrentOptionIndex, actionEnum.Options);
+    
         EditorGUILayout.EndHorizontal();
-
-        List<BehaviourEvent> eventsToRemove = new();
-
-        foreach(var behaviourEvent in m_behaviourObject.BehaviourEvents){
-            EditorGUILayout.BeginVertical("GroupBox");
-
-            EditorGUILayout.BeginHorizontal();
-
-            EditorGUILayout.LabelField(behaviourEvent.EventName);
-            if (GUILayout.Button("Remove", GUILayout.Width(60)))
-            {
-                eventsToRemove.Add(behaviourEvent);
-            }
-
-            EditorGUILayout.EndHorizontal();
-
-            foreach(var behaviourField in behaviourEvent.SourceVariables)
-            {
-                var behaviourVariable = m_behaviourObject.BehaviourVariables.FirstOrDefault(x => x.Source == behaviourEvent && x.SourceKey == behaviourField.Name);
-                if(behaviourVariable == null) continue;
-
-                EditorGUILayout.BeginHorizontal("GroupBox");
-
-                if (m_renamingVariable != behaviourVariable)
-                {
-                    EditorGUILayout.LabelField($"{behaviourField.Name} ({behaviourField.Type.Name}) - {behaviourVariable.Name}" , GUILayout.Width(240));
-                    if (GUILayout.Button("Rename", GUILayout.Width(60)))
-                    {
-                        m_renamingVariable = behaviourVariable;
-                    }
-                }
-                else
-                {
-                    var commitText = EditorGUILayout.DelayedTextField("", behaviourVariable.Name, GUILayout.Width(240));
-                    if (GUILayout.Button("Rename", GUILayout.Width(60)))
-                    {
-                       m_renamingVariable = null;
-                    }
-                    
-                    if(commitText != behaviourVariable.Name)
-                    {
-                        commitText = m_behaviourObject.BehaviourVariables.MakeUnique(x => x.Name, commitText);
-                        m_behaviourObject.ChangeVariableName(behaviourVariable, commitText);
-                        m_renamingVariable = null;
-                    }
-                }
-
-                EditorGUILayout.EndHorizontal();
-            }
-            EditorGUILayout.EndVertical();
-        }
-
-        foreach(var eventToRemove in eventsToRemove)
-        {
-            m_behaviourObject.RemoveEvent(eventToRemove);
-        }
     }
 
-    private void DrawConstantsSection()
+    private void DrawActionBuffer(BehaviourActionBuffer actionBuffer)
     {
-        EditorGUILayout.LabelField("Constants");
+        GUI.backgroundColor = m_themeConfig.ActionFieldActionBufferBackgroundColor;
+        var width = EditorGUIUtility.currentViewWidth * m_themeConfig.FieldWidthRatio;
+        EditorGUILayout.BeginHorizontal(m_themeConfig.ActionFieldStyle, GUILayout.Width(width));
 
-        EditorGUILayout.Space();
-
-        EditorGUILayout.HelpBox("Available types may show more options depending on existing events, actions or constants.\n If the desired type is not shown, add a source that uses that type.", MessageType.Info);
-
-        EditorGUILayout.Space();
-
-        EditorGUILayout.BeginHorizontal();
-
-        var availableTypes = m_behaviourObject.GetAvailableTypes();
-        var availableTypeNames = availableTypes.Select(x => x.Name).ToArray();
-
-        m_typePopupIndex = Mathf.Clamp(m_typePopupIndex, 0, availableTypeNames.Length);
-        m_typePopupIndex = EditorGUILayout.Popup(m_typePopupIndex ,availableTypeNames, GUILayout.Width(120));
-
-        EditorGUILayout.LabelField("Name", GUILayout.Width(45));
-        m_creatingConstantName = EditorGUILayout.TextField(m_creatingConstantName, GUILayout.Width(120));
-
-        m_creatingConstantName = m_behaviourObject.BehaviourVariables.MakeUnique(x => x.Name, m_creatingConstantName);
-
-        if (GUILayout.Button("+", GUILayout.Width(30)) && availableTypeNames.Length > 0)
-        {
-            m_behaviourObject.AddConstant(m_creatingConstantName, availableTypes[m_typePopupIndex]);
-        }
-
-        EditorGUILayout.Space();
+        EditorGUILayout.LabelField($"{actionBuffer.Name}", GUILayout.Width(m_themeConfig.FieldLabelWidth));
 
         EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.Space(15);
-
-        EditorGUILayout.BeginHorizontal();
-
-        List<string> sortOptions = new(){"All"};
-        sortOptions.AddRange(availableTypeNames);
-
-        var sortOptionsArray = sortOptions.ToArray();
-
-        EditorGUILayout.LabelField("Constant sort option:", GUILayout.Width(120));
-        m_constantSortOptionIndex = Mathf.Clamp(m_constantSortOptionIndex, 0, sortOptionsArray.Length);
-        m_constantSortOptionIndex = EditorGUILayout.Popup(m_constantSortOptionIndex, sortOptionsArray);
-
-        Type sortType = null;
-        if(m_constantSortOptionIndex != 0)
-        {
-            sortType = availableTypes[m_constantSortOptionIndex-1];
-        }
-
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.Space();
-
-        BehaviourConstant constantToRemove = null;
-
-        EditorGUILayout.BeginVertical();
-
-        foreach(var behaviourConstant in m_behaviourObject.BehaviourConstants)
-        {
-            if(sortType != null && behaviourConstant.Type != sortType) continue;
-
-            var behaviourVariable = m_behaviourObject.BehaviourVariables.FirstOrDefault(x => x.Source == behaviourConstant);
-            if(behaviourVariable == null) continue;
-
-            EditorGUILayout.BeginHorizontal("GroupBox");
-
-            if (m_renamingVariable != behaviourVariable)
-            {
-                EditorGUILayout.LabelField($"{behaviourConstant.Name} ({behaviourConstant.Type.Name})" , GUILayout.Width(120));
-                behaviourConstant.MultiTypeValue.DrawField();
-                if (GUILayout.Button("Rename", GUILayout.Width(60)))
-                {
-                    m_renamingVariable = behaviourVariable;
-                }
-            }
-            else
-            {
-                var commitText = EditorGUILayout.DelayedTextField("", behaviourVariable.Name, GUILayout.Width(240));
-                if (GUILayout.Button("Rename", GUILayout.Width(60)))
-                {
-                   m_renamingVariable = null;
-                }
-                
-                if(commitText != behaviourVariable.Name)
-                {
-                    commitText = m_behaviourObject.BehaviourVariables.MakeUnique(x => x.Name, commitText);
-                    m_behaviourObject.ChangeConstantName(behaviourConstant, commitText);
-                    m_renamingVariable = null;
-                }
-            }
-
-            if (GUILayout.Button("Remove", GUILayout.Width(60)))
-            {
-                constantToRemove = behaviourConstant;
-            }
-
-            EditorGUILayout.EndHorizontal();
-        }
-
-        EditorGUILayout.EndVertical();
-
-        if(constantToRemove != null)
-        {
-            m_behaviourObject.RemoveConstant(constantToRemove);
-        }
     }
 
-    private void DrawVariablesSection()
+    private void DrawNumberOption(BehaviourNumberOption actionNumberOption)
     {
-        EditorGUILayout.LabelField("Variables");
+        GUI.backgroundColor = m_themeConfig.ActionFieldNumberOptionBackgroundColor;
+        var width = EditorGUIUtility.currentViewWidth * m_themeConfig.FieldWidthRatio;
+        EditorGUILayout.BeginHorizontal(m_themeConfig.ActionFieldStyle, GUILayout.Width(width));
 
-        EditorGUILayout.Space();
-
-        var availableTypes = m_behaviourObject.GetAvailableTypes();
-        var availableTypeNames = availableTypes.Select(x => x.Name).ToArray();
-
-        EditorGUILayout.BeginHorizontal();
-
-        List<string> sortOptions = new(){"All"};
-        sortOptions.AddRange(availableTypeNames);
-
-        var sortOptionsArray = sortOptions.ToArray();
-
-        EditorGUILayout.LabelField("Variable sort option:", GUILayout.Width(120));
-        m_variableSortOptionIndex = Mathf.Clamp(m_variableSortOptionIndex, 0, sortOptionsArray.Length);
-        m_variableSortOptionIndex = EditorGUILayout.Popup(m_variableSortOptionIndex, sortOptionsArray);
-
-        Type sortType = null;
-        if(m_variableSortOptionIndex != 0)
-        {
-            sortType = availableTypes[m_variableSortOptionIndex-1];
-        }
+        EditorGUILayout.LabelField($"{actionNumberOption.Name}", GUILayout.Width(m_themeConfig.FieldLabelWidth));
+        GUILayout.FlexibleSpace();
+        
+        GUI.backgroundColor = m_themeConfig.Button1Color;
+        actionNumberOption.Value = EditorGUILayout.IntField(actionNumberOption.Value);
 
         EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.Space();
-
-        EditorGUILayout.BeginVertical();
-
-        var eventVariables = m_behaviourObject.BehaviourVariables.Where(x => m_behaviourObject.BehaviourEvents.Any(y => x.Source == y));
-        var constantVariables = m_behaviourObject.BehaviourVariables.Where(x => m_behaviourObject.BehaviourEvents.Any(y => x.Source == y));
-
-        var actionVariables = m_behaviourObject.BehaviourVariables.Where(x => !eventVariables.Contains(x) && !constantVariables.Contains(x));
-
-        foreach(var behaviourVariable in actionVariables)
-        {
-            if(sortType != null && behaviourVariable.Type != sortType) continue;
-
-            var behaviourAction = m_behaviourObject.BehaviourActions.FirstOrDefault(x => x == behaviourVariable.Source);
-
-            if(behaviourAction == null) continue;
-
-            EditorGUILayout.BeginHorizontal("GroupBox");
-
-            if (m_renamingVariable != behaviourVariable)
-            {
-                EditorGUILayout.LabelField($"{behaviourVariable.Name} ({behaviourVariable.Type.Name})" , GUILayout.Width(240));
-                if (GUILayout.Button("Rename", GUILayout.Width(60)))
-                {
-                    m_renamingVariable = behaviourVariable;
-                }
-            }
-            else
-            {
-                var commitText = EditorGUILayout.DelayedTextField("", behaviourVariable.Name, GUILayout.Width(240));
-                if (GUILayout.Button("Rename", GUILayout.Width(60)))
-                {
-                   m_renamingVariable = null;
-                }
-                
-                if(commitText != behaviourVariable.Name)
-                {
-                    commitText = m_behaviourObject.BehaviourVariables.MakeUnique(x => x.Name, commitText);
-                    m_behaviourObject.ChangeVariableName(behaviourVariable, commitText);
-                    m_renamingVariable = null;
-                }
-            }
-
-            EditorGUILayout.EndHorizontal();
-        }
-
-        EditorGUILayout.EndVertical();
     }
 
-    private void DrawActionsSection()
+    private void DrawIndicator(Rect rect)
     {
-        EditorGUILayout.LabelField("Actions");
-
-        EditorGUILayout.Space();
-
-        EditorGUILayout.BeginHorizontal();
-
-        var actionsCategorized = BehaviourUtility.AllAvailableActionsCategorized();
-
-        m_actionsPopupIndex = EditorGUILayout.Popup(m_actionsPopupIndex ,actionsCategorized, GUILayout.Width(120));
-
-        if (GUILayout.Button("+", GUILayout.Width(30)) && actionsCategorized.Length > 0)
-        {
-            var selectedActionCategorized = actionsCategorized[m_actionsPopupIndex];
-            var selectedActionName = BehaviourUtility.ActionNameFromCategorized(selectedActionCategorized);
-
-            var newActionType = BehaviourUtility.ActionTypeFromName(selectedActionName);
-            m_behaviourObject.AddAction(newActionType);
-        }
-
-        EditorGUILayout.Space();
-
-        EditorGUILayout.EndHorizontal();
-
-        BehaviourAction actionToRemove = null;
-
-        foreach(var behaviourAction in m_behaviourObject.BehaviourActions){
-            EditorGUILayout.BeginVertical("GroupBox");
-
-            EditorGUILayout.BeginHorizontal();
-
-            EditorGUILayout.LabelField(behaviourAction.ActionName);
-            if (GUILayout.Button("Remove", GUILayout.Width(60)))
-            {
-                actionToRemove = behaviourAction;
-            }
-
-            EditorGUILayout.EndHorizontal();
-
-            var beehaviourBindings = m_behaviourObject.BehaviourBindings.Where(x => x.Source == behaviourAction);
-
-            foreach(var behaviourBinding in beehaviourBindings)
-            {
-                var behaviourVariable = m_behaviourObject.BehaviourVariables.FirstOrDefault(x => x == behaviourBinding.TargetVariable);
-                if(behaviourVariable == null) continue;
-
-                EditorGUILayout.BeginHorizontal("GroupBox");
-
-                if (m_retargetingBinding != behaviourBinding)
-                {
-                    EditorGUILayout.LabelField($"{behaviourVariable.SourceKey} ({behaviourVariable.Type.Name}) - {behaviourVariable.Name}" , GUILayout.Width(240));
-                    if (GUILayout.Button("Retarget", GUILayout.Width(60)))
-                    {
-                        m_retargetingBinding = behaviourBinding;
-                    }
-                }
-                else
-                {
-                    var availableVariables = m_behaviourObject.BehaviourVariables.Where(x => x.Type == behaviourBinding.Type).ToArray();
-                    var availableVariableNames = new List<string>();
-                    availableVariableNames.AddRange(availableVariables.Select(x => x.Name));
-                    availableVariableNames.Add("New");
-                    var availableVariableNamesArray = availableVariableNames.ToArray();
-
-                    m_actionRetargetOptionIndex = Mathf.Clamp(m_actionRetargetOptionIndex, 0, availableVariableNamesArray.Length);
-                    m_actionRetargetOptionIndex = EditorGUILayout.Popup(m_actionRetargetOptionIndex, availableVariableNamesArray, GUILayout.Width(240));
-                    if (GUILayout.Button("Retarget", GUILayout.Width(60)))
-                    {
-                        BehaviourVariable targetVariable;
-                        if(m_actionRetargetOptionIndex == availableVariables.Length)
-                        {
-                            targetVariable = m_behaviourObject.AddVariable(behaviourBinding.SourceKey, behaviourBinding.Type, behaviourAction);
-                        } else
-                        {
-                            targetVariable = availableVariables[m_actionRetargetOptionIndex];
-                        }
-                        m_behaviourObject.ChangeBindingTarget(behaviourBinding, targetVariable);
-                        m_retargetingBinding = null;
-                    }
-                }
-
-                EditorGUILayout.EndHorizontal();
-            }
-            EditorGUILayout.EndVertical();
-        }
-
-        if(actionToRemove != null)
-        {
-            m_behaviourObject.RemoveAction(actionToRemove);
-        }
+        EditorGUI.DrawRect(rect, m_themeConfig.IndicatorColor);
     }
-
-    private enum ShowType
-    {
-        Variable,
-        Actions,
-    }*/
 }
-
-#endif

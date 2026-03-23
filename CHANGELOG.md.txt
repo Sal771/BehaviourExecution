@@ -1,0 +1,63 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+
+## [Unreleased]
+
+## [0.2.0]
+
+### Added
+
+- BehaviourTypes, instead of behaviour objects scanning and imposing what kind of types can be used,
+you can extend BehaviourType and have it available in BehaviourUtility.
+- Added some pre-made behaviour types between some commonly used primitives and Unity types.
+- BehaviourActionBuffers, yet to be fully implemented into BehaviourObjects.
+- BehaviourNumberOptions.
+- BehaviourExecutionThemeConfig scriptable object.
+- Click and Drag and Drop logic within BehaviourEditorUtility.
+- BehaviourBlackboard, to be a container for BehaviourVariables to collectively be added to a BehaviourObject.
+- BehaviourBlackboardEditor.
+- BehaviourActionFields, extended by BehaviourActions, BehaviourEvents, BehaviourActionBuffer and BehaviourNumberOption.
+- FirstBehaviour scene.
+
+### Changed
+
+- Added Changelog.
+- Updated assembly references.
+- BehaviourVariables have been reworked to be a component of BehaviourBlackboard fully indipendent from any other behaviour component.
+- BehaviourUtility now also tracks available BehaviourType and getting an according type display name.
+- Behaviour Execution is temporarily out of use due to the ongoing rework of next-to-run action logic for adding BehaviourActionBuffers.
+- Added functionality to the draft of pre-made actions.
+- Updated BehaviourObjectEditor to accomodate incoming new features and reworks.
+- Tweaked the workflow for declaring variables and more within actions.
+- Fixed serialization bug in Multitype object.
+
+### Removed
+
+- BehaviourConstant and BehaviourBinding, replaced purely with BehaviourVariables configurable variable mode.
+- BehaviourSources, as part of the variables reword.
+
+## [0.1.0]
+
+### Added
+
+- BehaviourObject scriptable object.
+- BehaviourAction scriptable object.
+- BehaviourEvent scriptable object.
+- BehaviourConstant scriptable object.
+- BehaviourVariable and BehaviourBinding as part of all BehaviourSources to track needed variables.
+- BehaviourStateMachine MonoBehaviour.
+- BehaviourUtility to mostly gather available Actions and Event types.
+- Some pre-made actions for Arithmetics, Control, Misc and Variable.
+- The draft of the GameVariables functionality, not yet for use.
+- ExecutionRunner MonoBehaviour.
+- ExecutionObject and ExecutionVariable simple classes.
+- IBehaviourBinding, IBehaviourExecution, IBehaviourVariable interfaces.
+- SourceCategoryAttribute for customizing Actions and Events information within BehaviourUtility for the editor popups.
+- MultiTypeObject.
+
+### Changed
+
+- Converted project into an Unity Git Package

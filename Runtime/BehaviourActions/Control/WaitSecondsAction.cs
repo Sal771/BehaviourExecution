@@ -4,12 +4,10 @@ using UnityEngine;
 [BehaviourCategory("Control/Wait Seconds")]
 public class WaitSecondsAction : BehaviourAction
 {
-    private BehaviourBinding m_waitSecondsReference;
-    private BehaviourBinding m_waitSecondsLeftReference;
-    public override void DefineBindings(IBehaviourVariable actionContext)
+    protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        m_waitSecondsReference = actionContext.DeclareVariable<float>("WaitSeconds");
-        m_waitSecondsLeftReference = actionContext.DeclareVariable<float>("WaitSecondsLeft");
+        actionContext.DeclareVariable<float>("WaitSeconds");
+        actionContext.DeclareVariable<float>("WaitSecondsLeft");
     }
 
     protected override string GetActionName()
@@ -19,21 +17,21 @@ public class WaitSecondsAction : BehaviourAction
 
     public override ExecutionActionResult Execute(IBehaviourExecution executionContext)
     {
-        var secondsToWait = executionContext.ReadVariable<float>(m_waitSecondsReference);
+        var secondsToWait = executionContext.ReadVariable<float>("WaitSeconds");
 
-        executionContext.WriteVariable<float>(m_waitSecondsLeftReference, secondsToWait);
+        executionContext.WriteVariable<float>("WaitSecondsLeft", secondsToWait);
 
         return ExecutionActionResult.Waiting;
     }
     public override bool WaitCondition(IBehaviourExecution executionContext)
     {
-        var secondsToWait = executionContext.ReadVariable<float>(m_waitSecondsLeftReference);
+        var secondsToWait = executionContext.ReadVariable<float>("WaitSecondsLeft");
 
         if(secondsToWait <= 0){
             return true;
         }
 
-        executionContext.WriteVariable<float>(m_waitSecondsLeftReference, secondsToWait-Time.deltaTime);
-        return false;;
+        executionContext.WriteVariable<float>("WaitSecondsLeft", secondsToWait - Time.deltaTime);
+        return false;
     }
 }

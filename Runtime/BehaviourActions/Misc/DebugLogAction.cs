@@ -4,10 +4,9 @@ using UnityEngine;
 [BehaviourCategory("Misc/Debug Log")]
 public class DebugLogAction : BehaviourAction
 {
-    private BehaviourBinding m_textReference;
-    public override void DefineBindings(IBehaviourVariable actionContext)
+    protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        m_textReference = actionContext.DeclareVariable<string>("Text");
+        actionContext.DeclareVariable<string>("Text");
     }
 
     protected override string GetActionName()
@@ -17,7 +16,7 @@ public class DebugLogAction : BehaviourAction
 
     public override ExecutionActionResult Execute(IBehaviourExecution executionContext)
     {
-        var text = executionContext.ReadVariable<string>(m_textReference);
+        var text = executionContext.ReadVariable<string>("Text");
 
         Debug.Log(text);
 

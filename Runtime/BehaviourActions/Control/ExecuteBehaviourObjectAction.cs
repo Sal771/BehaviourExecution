@@ -1,11 +1,13 @@
 using com.Sal77.BehaviourExecution;
+using UnityEngine;
 
 [BehaviourCategory("Control/Execute Behaviour Object")]
 public class ExecuteBehaviourObjectAction : BehaviourAction
 {
-    public override void DefineBindings(IBehaviourVariable actionContext)
+    protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        
+        actionContext.DeclareVariable<BehaviourObject>("Behaviour Object");
+        actionContext.DeclareVariable<GameObject>("Game Object");
     }
 
     protected override string GetActionName()
@@ -15,6 +17,11 @@ public class ExecuteBehaviourObjectAction : BehaviourAction
 
     public override ExecutionActionResult Execute(IBehaviourExecution executionContext)
     {
+        var behaviourObject = executionContext.ReadVariable<BehaviourObject>("Behaviour Object");
+        var gameObject = executionContext.ReadVariable<GameObject>("Game Object");
+
+        gameObject.GetComponent<ExecutionRunner>()?.Execute(behaviourObject);
+
         return ExecutionActionResult.Successful;
     }
 }

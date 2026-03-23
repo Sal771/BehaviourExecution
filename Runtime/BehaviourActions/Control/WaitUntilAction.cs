@@ -3,10 +3,9 @@ using com.Sal77.BehaviourExecution;
 [BehaviourCategory("Control/Wait Seconds")]
 public class WaitUntilAction : BehaviourAction
 {
-    private BehaviourBinding m_conditionBooleanReference;
-    public override void DefineBindings(IBehaviourVariable actionContext)
+    protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        m_conditionBooleanReference = actionContext.DeclareVariable<bool>("ConditionBoolean");
+        actionContext.DeclareVariable<bool>("Condition Boolean");
     }
 
     protected override string GetActionName()
@@ -16,13 +15,13 @@ public class WaitUntilAction : BehaviourAction
 
     public override ExecutionActionResult Execute(IBehaviourExecution executionContext)
     {
-        executionContext.WriteVariable<bool>(m_conditionBooleanReference, false);
+        executionContext.WriteVariable<bool>("Condition Boolean", false);
 
         return ExecutionActionResult.Waiting;
     }
     public override bool WaitCondition(IBehaviourExecution executionContext)
     {
-        var pooledBoolean = executionContext.ReadVariable<bool>(m_conditionBooleanReference);
+        var pooledBoolean = executionContext.ReadVariable<bool>("Condition Boolean");
 
         return pooledBoolean;
     }

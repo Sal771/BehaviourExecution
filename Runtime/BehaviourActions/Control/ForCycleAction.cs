@@ -3,9 +3,10 @@ using com.Sal77.BehaviourExecution;
 [BehaviourCategory("Control/For Cycle")]
 public class ForCycleAction : BehaviourAction
 {
-    public override void DefineBindings(IBehaviourVariable actionContext)
+    protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        
+        actionContext.DeclareVariable<int>("Iteration Count");
+        actionContext.DeclareActionBuffer("Loop Actions");
     }
 
     protected override string GetActionName()
@@ -15,6 +16,41 @@ public class ForCycleAction : BehaviourAction
 
     public override ExecutionActionResult Execute(IBehaviourExecution executionContext)
     {
-        return ExecutionActionResult.Successful;
+        int iterations = executionContext.ReadVariable<int>("Iteration Count");
+
+        if(iterations > 0)
+        {
+            executionContext.ExecuteActionBuffer("Loop Actions");
+            executionContext.WriteVariable<int>("Iteration Count", iterations-1);
+        }
+
+        if(iterations > 0)
+        {
+            return ExecutionActionResult.Waiting;
+        }
+        else
+        {
+            return ExecutionActionResult.Successful;
+        }
+    }
+
+    public override bool WaitCondition(IBehaviourExecution executionContext)
+    {
+        int iterations = executionContext.ReadVariable<int>("Iteration Count");
+
+        if(iterations > 0)
+        {
+            executionContext.ExecuteActionBuffer("Loop Actions");
+            executionContext.WriteVariable<int>("Iteration Count", iterations-1);
+        }
+
+        if(iterations > 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }

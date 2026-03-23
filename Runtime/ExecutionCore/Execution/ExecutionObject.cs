@@ -37,54 +37,101 @@ namespace com.Sal77.BehaviourExecution
             Reset(eventType, eventParams);
         }
 
-        public void DefineVariable(string name, Type type)
+        public void Update()
         {
-            var variable = new ExecutionVariable(name, type);
+            if(m_currentAction != null)
+            {
+                if(m_currentAction.ExecutionResult == ExecutionActionResult.Pending)
+                {
+                    m_currentAction.Execute(this);
+                } else
+                {
+                    m_currentAction.Update(this);
+                }
+
+                if (m_currentAction.ExecutionResult == ExecutionActionResult.Successful)
+                {
+                    m_currentAction = m_currentAction.NextAction;
+                }
+            }
+        }
+
+        private void DefineVariable(string variableName, Type type)
+        {
+            var variable = new ExecutionVariable(variableName, type);
 
             m_executionVariables.Add(variable);
         }
 
-        public void WriteVariable(string name, Type type, object value)
+        public void WriteVariable(string variableName, Type type, object value)
         {
-            var variable = m_executionVariables.FirstOrDefault(x => x.Name == name);
+            var sourceVariable = m_currentAction.BehaviourAction.ActionVariables.FirstOrDefault(x => x.Name == variableName);
+            
+            if(sourceVariable == null)
+            {
+                Debug.LogWarning($"{m_behaviourObject.name} - Attempted to write variable '{variableName}' not found within action.");
+                return;
+            }
+
+            var variable = m_executionVariables.FirstOrDefault(x => x.Name == sourceVariable.TargetVariableName);
 
             if(variable == null)
             {
-                Debug.LogWarning($"{m_behaviourObject.name} - Attempted to write variable '{name}' not found within behaviour");
+                Debug.LogWarning($"{m_behaviourObject.name} - Attempted to write variable '{variableName}' not found within behaviour");
                 return;
             }
 
             if(variable.Type != type)
             {
-                Debug.LogWarning($"{m_behaviourObject.name} - Attempted to write variable '{name}' found with mismatching type");
+                Debug.LogWarning($"{m_behaviourObject.name} - Attempted to write variable '{variableName}' found with mismatching type");
                 return;
             }
 
             variable.Set(value, type);
         }
 
-        public void WriteVariable<T>(BehaviourBinding variableBinding, T value)
+        public void WriteVariable<T>(string variableName, T value)
         {
-            var variable = m_executionVariables.FirstOrDefault(x => x.Name == variableBinding.TargetVariable.Name);
+            WriteVariable(variableName, typeof(T), value);
+        }
+        public void WriteVariable(string variableName, MultiTypeObject source)
+        {
+            var sourceVariable = m_currentAction.BehaviourAction.ActionVariables.FirstOrDefault(x => x.Name == variableName);
+            
+            if(sourceVariable == null)
+            {
+                Debug.LogWarning($"{m_behaviourObject.name} - Attempted to write variable '{variableName}' not found within action.");
+                return;
+            }
+            
+            var variable = m_executionVariables.FirstOrDefault(x => x.Name == sourceVariable.TargetVariableName);
 
             if(variable == null)
             {
-                Debug.LogWarning($"{m_behaviourObject.name} - Attempted to write variable '{variable.Name}' not found within behaviour");
+                Debug.LogWarning($"{m_behaviourObject.name} - Attempted to write variable '{variable.Name}' not found within behaviour.");
                 return;
             }
 
-            if(variable.Type != value.GetType())
+            if(variable.Type != source.Type)
             {
-                Debug.LogWarning($"{m_behaviourObject.name} - Attempted to write variable '{variable.Name}' found with mismatching type");
+                Debug.LogWarning($"{m_behaviourObject.name} - Attempted to write variable '{variable.Name}' found with mismatching type.");
                 return;
             }
 
-            variable.Set(value);
+            variable.Set(source);
         }
 
-        public T ReadVariable<T>(BehaviourBinding variableBinding)
+        public T ReadVariable<T>(string variableName)
         {
-            var variable = m_executionVariables.FirstOrDefault(x => x.Name == variableBinding.TargetVariable.Name);
+            var sourceVariable = m_currentAction.BehaviourAction.ActionVariables.FirstOrDefault(x => x.Name == variableName);
+            
+            if(sourceVariable == null)
+            {
+                Debug.LogWarning($"{m_behaviourObject.name} - Attempted to read variable '{variableName}' not found within action.");
+                return default;
+            }
+            
+            var variable = m_executionVariables.FirstOrDefault(x => x.Name == sourceVariable.TargetVariableName);
 
             if(variable == null)
             {
@@ -100,11 +147,26 @@ namespace com.Sal77.BehaviourExecution
 
             return variable.Get<T>();
         }
+
+        public void ExecuteActionBuffer(string bufferName)
+        {
+            throw new NotImplementedException();//TODO Implement this
+        }
+
+        public void ResetVariable(string variableName)
+        {
+            var variable = m_executionVariables.FirstOrDefault(x => x.Name == variableName);
+
+            variable.Reset();
+        }
         public void Setup()
         {
-            /*foreach(var variable in m_behaviourObject.BehaviourVariables)
+            foreach(var blackboard in m_behaviourObject.BehaviourBlackboards)
             {
-                DefineVariable(variable.Name, variable.Type);
+                foreach(var variable in blackboard.BehaviourVariables)
+                {
+                    DefineVariable(variable.Name, variable.Type);
+                }
             }
 
             Dictionary<BehaviourAction, ExecutionAction> actionCache = new();
@@ -123,7 +185,7 @@ namespace com.Sal77.BehaviourExecution
                 {
                     actionPair.Value.NextAction = actionCache[nextAction];
                 }
-            }*/
+            }
         }
 
         public void Reset()
@@ -133,47 +195,33 @@ namespace com.Sal77.BehaviourExecution
 
         public void Reset(Type eventType, params object[] eventParams)
         {
-            /*var behaviourEvent = m_behaviourObject.BehaviourEvents.First(x => x.GetType() == eventType);
+            var behaviourEvent = m_behaviourObject.BehaviourEvents.First(x => x.GetType() == eventType);
 
-            var eventSourceVariables = behaviourEvent.SourceVariables;
+            var eventSourceVariables = behaviourEvent.EventVariables;
 
             for(int i=0; i<eventParams.Length; i++)
             {
                 WriteVariable(eventSourceVariables[i].Name, eventSourceVariables[i].Type, eventParams[i]);
             }
 
-            foreach(var constant in m_behaviourObject.BehaviourConstants)
+            foreach(var blackboard in m_behaviourObject.BehaviourBlackboards)
             {
-                WriteVariable(constant.Name, constant.Type, constant.MultiTypeValue.GetValue());
-            }
-
-            foreach(var constant in m_behaviourObject.BehaviourConstants)
-            {
-                WriteVariable(constant.Name, constant.Type, constant.MultiTypeValue.GetValue());
+                foreach(var variable in blackboard.BehaviourVariables)
+                {
+                    if (variable.VariableMode == BehaviourVariable.BehaviourVariableMode.Configurable)
+                    {
+                        WriteVariable(variable.Name, variable.MultiTypeValue);
+                    }
+                    else
+                    {
+                        ResetVariable(variable.Name);
+                    }
+                }
             }
 
             if (m_executionActions.Count > 0)
             {
                 m_currentAction = m_executionActions[0];
-            }*/
-        }
-
-        public void Update()
-        {
-            if(m_currentAction != null)
-            {
-                if(m_currentAction.ExecutionResult == ExecutionActionResult.Pending)
-                {
-                    m_currentAction.Execute(this);
-                } else
-                {
-                    m_currentAction.Update(this);
-                }
-
-                if (m_currentAction.ExecutionResult == ExecutionActionResult.Successful)
-                {
-                    m_currentAction = m_currentAction.NextAction;
-                }
             }
         }
     }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using com.Sal77.GameCore;
 
 namespace com.Sal77.BehaviourExecution
 {
@@ -47,11 +46,7 @@ namespace com.Sal77.BehaviourExecution
         }
         public void Set<T>(T value)
         {
-            if(m_type != typeof(T)){
-                Debug.Log($"{m_name} - Attempted to write variable of type '{m_type.Name}' with wrong type '{typeof(T).Name}'");
-                return;
-            }
-            m_multiTypeObject.SetValue<T>(value);
+            Set(value, typeof(T));
         }
         public void Set(object value, Type type)
         {
@@ -60,6 +55,14 @@ namespace com.Sal77.BehaviourExecution
                 return;
             }
             m_multiTypeObject.SetValue(value, type);
+        }
+        public void Set(MultiTypeObject source)
+        {
+            Set(source);
+        }
+        public void Reset()
+        {
+            m_multiTypeObject.Reset();
         }
     }
 }
