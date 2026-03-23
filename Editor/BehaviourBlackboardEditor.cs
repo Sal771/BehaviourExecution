@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 using com.Sal77.BehaviourExecution;
-using com.Sal77.GameCore;
 using System.IO;
 
 [CustomEditor(typeof(BehaviourBlackboard))]
