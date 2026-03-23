@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- Embedded a default theme config.
+- Fixed old dependencies.
 - Fixed meta files.
 - Fixed ChooseRandomListExtension missing.
 
