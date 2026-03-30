@@ -6,8 +6,8 @@ public class WaitSecondsAction : BehaviourAction
 {
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        actionContext.DeclareVariable<float>("WaitSeconds");
-        actionContext.DeclareVariable<float>("WaitSecondsLeft");
+        actionContext.DeclareVariable<float>("WaitSeconds", IBehaviourActionReadMode.Input);
+        actionContext.DeclareVariable<float>("WaitSecondsLeft", IBehaviourActionReadMode.Output);
     }
 
     protected override string GetActionName()

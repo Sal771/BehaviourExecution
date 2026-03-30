@@ -6,10 +6,10 @@ public class GetRayRotatedAroundPointAction : BehaviourAction
 {
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        actionContext.DeclareVariable<Ray>("Ray");
-        actionContext.DeclareVariable<Vector3>("Pivot Position");
-        actionContext.DeclareVariable<Quaternion>("Rotation");
-        actionContext.DeclareVariable<Ray>("Output");
+        actionContext.DeclareVariable<Ray>("Ray", IBehaviourActionReadMode.Input);
+        actionContext.DeclareVariable<Vector3>("Pivot Position", IBehaviourActionReadMode.Input);
+        actionContext.DeclareVariable<Quaternion>("Rotation", IBehaviourActionReadMode.Input);
+        actionContext.DeclareVariable<Ray>("Output", IBehaviourActionReadMode.Output);
     }
 
     protected override string GetActionName()

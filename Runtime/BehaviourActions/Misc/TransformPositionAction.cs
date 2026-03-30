@@ -6,8 +6,8 @@ public class TransformPositionAction : BehaviourAction
 {
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        actionContext.DeclareVariable<Transform>("Transform");
-        actionContext.DeclareVariable<Vector3>("Result");
+        actionContext.DeclareVariable<Transform>("Transform", IBehaviourActionReadMode.Input);
+        actionContext.DeclareVariable<Vector3>("Result", IBehaviourActionReadMode.Input);
     }
 
     public override ExecutionActionResult Execute(IBehaviourExecution executionContext)

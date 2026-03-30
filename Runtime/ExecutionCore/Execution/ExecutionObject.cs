@@ -96,15 +96,24 @@ namespace com.Sal77.BehaviourExecution
         }
         public void WriteVariable(string variableName, MultiTypeObject source)
         {
-            var sourceVariable = m_currentAction.BehaviourAction.ActionVariables.FirstOrDefault(x => x.Name == variableName);
-            
-            if(sourceVariable == null)
+            ExecutionVariable variable;
+
+            if(m_currentAction != null)
             {
-                Debug.LogWarning($"{m_behaviourObject.name} - Attempted to write variable '{variableName}' not found within action.");
-                return;
-            }
+                var sourceVariable = m_currentAction.BehaviourAction.ActionVariables.FirstOrDefault(x => x.Name == variableName);
             
-            var variable = m_executionVariables.FirstOrDefault(x => x.Name == sourceVariable.TargetVariableName);
+                if(sourceVariable == null)
+                {
+                    Debug.LogWarning($"{m_behaviourObject.name} - Attempted to write variable '{variableName}' not found within action.");
+                    return;
+                }
+                
+                variable = m_executionVariables.FirstOrDefault(x => x.Name == sourceVariable.TargetVariableName);
+            }
+            else
+            {
+                variable = m_executionVariables.FirstOrDefault(x => x.Name == variableName);
+            }
 
             if(variable == null)
             {
@@ -195,13 +204,19 @@ namespace com.Sal77.BehaviourExecution
 
         public void Reset(Type eventType, params object[] eventParams)
         {
-            var behaviourEvent = m_behaviourObject.BehaviourEvents.First(x => x.GetType() == eventType);
-
-            var eventSourceVariables = behaviourEvent.EventVariables;
-
-            for(int i=0; i<eventParams.Length; i++)
+            if(eventType != null)
             {
-                WriteVariable(eventSourceVariables[i].Name, eventSourceVariables[i].Type, eventParams[i]);
+                var behaviourEvent = m_behaviourObject.BehaviourEvents.FirstOrDefault(x => x.GetType() == eventType);
+
+                //TODO Handle no event
+
+                var eventSourceVariables = behaviourEvent.EventVariables;
+
+                for(int i=0; i<eventParams.Length; i++)
+                {
+                    WriteVariable(eventSourceVariables[i].Name, eventSourceVariables[i].Type, eventParams[i]);
+                }
+
             }
 
             foreach(var blackboard in m_behaviourObject.BehaviourBlackboards)

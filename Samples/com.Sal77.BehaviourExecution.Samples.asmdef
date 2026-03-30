@@ -1,15 +1,15 @@
 {
-    "name": "com.Sal77.BehaviourExecution.Editor",
+    "name": "com.Sal77.BehaviourExecution.Samples",
     "rootNamespace": "",
     "references": [
-        "com.Sal77.BehaviourExecution.Runtime"
+        "GUID:a731b09fa1d85cb4189e5d5bfab574c2"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": false,
+    "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false

@@ -6,7 +6,7 @@ public class DebugLogAction : BehaviourAction
 {
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        actionContext.DeclareVariable<string>("Text");
+        actionContext.DeclareVariable<string>("Text", IBehaviourActionReadMode.Input);
     }
 
     protected override string GetActionName()

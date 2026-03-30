@@ -6,9 +6,9 @@ public class GetRayRotated : BehaviourAction
 {
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        actionContext.DeclareVariable<Ray>("Position");
-        actionContext.DeclareVariable<Vector2>("RandomAngle");
-        actionContext.DeclareVariable<Ray>("Output");
+        actionContext.DeclareVariable<Ray>("Position", IBehaviourActionReadMode.Input);
+        actionContext.DeclareVariable<Vector2>("RandomAngle", IBehaviourActionReadMode.Input);
+        actionContext.DeclareVariable<Ray>("Output", IBehaviourActionReadMode.Output);
     }
 
     public override ExecutionActionResult Execute(IBehaviourExecution executionContext)

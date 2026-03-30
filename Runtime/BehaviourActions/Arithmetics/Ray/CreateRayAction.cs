@@ -6,9 +6,9 @@ public class CreateRayAction : BehaviourAction
 {
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        actionContext.DeclareVariable<Vector3>("Position");
-        actionContext.DeclareVariable<Vector3>("Direction");
-        actionContext.DeclareVariable<Ray>("Result");
+        actionContext.DeclareVariable<Vector3>("Position", IBehaviourActionReadMode.Input);
+        actionContext.DeclareVariable<Vector3>("Direction", IBehaviourActionReadMode.Input);
+        actionContext.DeclareVariable<Ray>("Result", IBehaviourActionReadMode.Output);
     }
 
     public override ExecutionActionResult Execute(IBehaviourExecution executionContext)

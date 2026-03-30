@@ -5,7 +5,7 @@ public class WaitUntilAction : BehaviourAction
 {
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        actionContext.DeclareVariable<bool>("Condition Boolean");
+        actionContext.DeclareVariable<bool>("Condition Boolean", IBehaviourActionReadMode.Input);
     }
 
     protected override string GetActionName()

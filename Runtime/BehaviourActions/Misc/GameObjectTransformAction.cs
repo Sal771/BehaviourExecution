@@ -7,8 +7,8 @@ public class GameObjectTransformAction : BehaviourAction
 
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        actionContext.DeclareVariable<GameObject>("GameObject");
-        actionContext.DeclareVariable<Transform>("Result");
+        actionContext.DeclareVariable<GameObject>("GameObject", IBehaviourActionReadMode.Input);
+        actionContext.DeclareVariable<Transform>("Result", IBehaviourActionReadMode.Input);
     }
 
     public override ExecutionActionResult Execute(IBehaviourExecution executionContext)

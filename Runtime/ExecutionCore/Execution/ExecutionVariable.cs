@@ -58,7 +58,7 @@ namespace com.Sal77.BehaviourExecution
         }
         public void Set(MultiTypeObject source)
         {
-            Set(source);
+            m_multiTypeObject.SetValue(source);
         }
         public void Reset()
         {

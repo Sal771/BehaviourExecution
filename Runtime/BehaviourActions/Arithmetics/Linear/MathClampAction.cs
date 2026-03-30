@@ -13,10 +13,10 @@ public class MathClampAction : BehaviourAction
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
         //TODO fix this
-        actionContext.DeclareVariable<float>("Number");
-        actionContext.DeclareVariable<float>("ClampMin");
-        actionContext.DeclareVariable<float>("ClampMax");
-        actionContext.DeclareVariable<float>("Output");
+        actionContext.DeclareVariable<float>("Number", IBehaviourActionReadMode.Input);
+        actionContext.DeclareVariable<float>("ClampMin", IBehaviourActionReadMode.Input);
+        actionContext.DeclareVariable<float>("ClampMax", IBehaviourActionReadMode.Input);
+        actionContext.DeclareVariable<float>("Output", IBehaviourActionReadMode.Output);
     }
 
     protected override string GetActionName()

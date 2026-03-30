@@ -7,7 +7,7 @@ public class WaitForInputAction : BehaviourAction
 {
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        actionContext.DeclareVariable<InputAction>("Input Action");
+        actionContext.DeclareVariable<InputAction>("Input Action", IBehaviourActionReadMode.Input);
     }
 
     protected override string GetActionName()

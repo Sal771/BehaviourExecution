@@ -7,88 +7,67 @@ using com.Sal77.BehaviourExecution;
 using System.IO;
 
 //TODO variable renaming
-//TODO Drag n Scroll
-//TODO Section title
+//TODO variable selection
+//TODO Section title foldout
 
 [CustomEditor(typeof(BehaviourObject))]
 public class BehaviourObjectEditor : Editor
 {
     private bool m_instructionsFoldout;
+    private int m_selectedEventIndex;
     private int m_selectedActionIndex;
     private List<BehaviourAction> m_selectedActions = new();
     private BehaviourExecutionThemeConfig m_themeConfig;
+    private BehaviourObject m_behaviourObject;
+    private BehaviourActionBuffer m_behaviourActionBuffer;
 
     public class BehaviourActionDrag
     {
         public BehaviourAction behaviourAction;
     }
 
+    public class BehaviourEventDrag
+    {
+        public BehaviourEvent behaviourEvent;
+    }
+
     public override void OnInspectorGUI()
     {
-        if(m_themeConfig == null)
+        if (m_themeConfig == null)
         {
             m_themeConfig = BehaviourEditorUtility.GetThemeConfig();
         }
 
-        BehaviourObject behaviourObject = (BehaviourObject)target;
-        BehaviourActionBuffer behaviourActionBuffer = behaviourObject.BehaviourActionBuffer;
+        m_behaviourObject = (BehaviourObject)target;
+        m_behaviourActionBuffer = m_behaviourObject.BehaviourActionBuffer;
 
-        //Instructions Box
+        m_behaviourObject.Validate();
 
-        GUI.backgroundColor = m_themeConfig.Background1Color;
-        EditorGUILayout.BeginVertical(m_themeConfig.InstructionStyle);
-
-        GUI.backgroundColor = m_themeConfig.Details1Color;
-        m_instructionsFoldout = EditorGUILayout.Foldout(m_instructionsFoldout, "Instructions");
-
-        if (m_instructionsFoldout)
-        {
-            EditorGUILayout.LabelField(
-                "Expand width to read fully.\n\n"
-                +"BLACKBOARDS.\n\n"
-                +"EVENTS.\n\n"
-                +"ACTIONS.\n"
-            , GUILayout.Height(260));
-        }
-        EditorGUILayout.EndVertical();
+        DrawInstructions();
 
         EditorGUILayout.Space();
 
-        //Blackboard Box
-
-        //Header
-        GUI.backgroundColor = m_themeConfig.Background2Color;
-        EditorGUILayout.BeginVertical(m_themeConfig.HeaderStyle);
-
-        EditorGUILayout.LabelField("Blackboards", m_themeConfig.HeaderStyle);
-
-        EditorGUILayout.EndVertical();
-
-        GUI.backgroundColor = m_themeConfig.Background1Color;
-        EditorGUILayout.BeginVertical(m_themeConfig.Background1Style, GUILayout.MinHeight(120));
-        EditorGUILayout.LabelField("");
-        EditorGUILayout.EndVertical();
+        DrawBlackboardBox();
 
         EditorGUILayout.Space();
 
-        //Events Box
-
-        //Header
-        GUI.backgroundColor = m_themeConfig.Background2Color;
-        EditorGUILayout.BeginVertical(m_themeConfig.HeaderStyle);
-
-        EditorGUILayout.LabelField("Events", m_themeConfig.HeaderStyle);
-
-        EditorGUILayout.EndVertical();
-
-        GUI.backgroundColor = m_themeConfig.Background1Color;
-        EditorGUILayout.BeginVertical(m_themeConfig.Background1Style, GUILayout.MinHeight(120));
-        EditorGUILayout.LabelField("");
-        EditorGUILayout.EndVertical();
+        DrawEventsBox();
 
         EditorGUILayout.Space();
 
         //Actions Box
+        DrawActionsBox();
+
+        //Drag Exit
+        if (Event.current.type == EventType.DragExited)
+        {
+            DragAndDrop.SetGenericData("Behaviour Action Drag", null);
+            this.Repaint();
+        }
+    }
+
+    private void DrawActionsBox()
+    {
 
         //Header
         GUI.backgroundColor = m_themeConfig.Background2Color;
@@ -113,11 +92,11 @@ public class BehaviourObjectEditor : Editor
             BehaviourAction action = (BehaviourAction)ScriptableObject.CreateInstance(actionType);
             action.name = actionType.Name + "_" + Guid.NewGuid();
 
-            AssetDatabase.AddObjectToAsset(action, behaviourObject);
+            AssetDatabase.AddObjectToAsset(action, m_behaviourObject);
 
-            behaviourActionBuffer.Add(action);
+            m_behaviourObject.AddAction(action);
 
-            EditorUtility.SetDirty(behaviourObject);
+            EditorUtility.SetDirty(m_behaviourObject);
             AssetDatabase.SaveAssets();
         }
 
@@ -137,24 +116,358 @@ public class BehaviourObjectEditor : Editor
 
         EditorGUILayout.EndHorizontal();
 
-        DrawBehaviourActionBuffer(behaviourObject, behaviourActionBuffer);
+        DrawBehaviourActionBuffer(m_behaviourObject, m_behaviourActionBuffer);
+
+        EditorGUILayout.EndVertical();
+    }
+
+    private void DrawEventsBox()
+    {
+        //Events Box
+
+        //Header
+        GUI.backgroundColor = m_themeConfig.Background2Color;
+        EditorGUILayout.BeginVertical(m_themeConfig.HeaderStyle);
+
+        EditorGUILayout.LabelField("Events", m_themeConfig.HeaderStyle);
 
         EditorGUILayout.EndVertical();
 
-        //Drag Exit
-        if (Event.current.type == EventType.DragExited)
+        GUI.backgroundColor = m_themeConfig.Background1Color;
+        EditorGUILayout.BeginVertical(m_themeConfig.Background1Style);
+
+        EditorGUILayout.BeginHorizontal();
+
+        GUI.backgroundColor = m_themeConfig.Button1Color;
+        string[] eventscategorized = BehaviourUtility.AllAvailableEventsCategorized();
+        m_selectedEventIndex = EditorGUILayout.Popup(m_selectedEventIndex, eventscategorized);
+
+        if (GUILayout.Button("+"))
         {
-            DragAndDrop.SetGenericData("Behaviour Action Drag", null);
-            this.Repaint();
+            Type eventType = BehaviourUtility.EventTypeFromCategorized(eventscategorized[m_selectedEventIndex]);
+            BehaviourEvent behaviourEvent = (BehaviourEvent)ScriptableObject.CreateInstance(eventType);
+            behaviourEvent.name = eventType.Name + "_" + Guid.NewGuid();
+
+            AssetDatabase.AddObjectToAsset(behaviourEvent, m_behaviourObject);
+
+            m_behaviourObject.AddEvent(behaviourEvent);
+
+            EditorUtility.SetDirty(m_behaviourObject);
+            AssetDatabase.SaveAssets();
         }
+
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginVertical();
+
+        DrawBehaviourEvents();
+
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.EndVertical();
+    }
+
+    private void DrawBlackboardBox()
+    {
+        //Blackboard Box
+
+        //Header
+        GUI.backgroundColor = m_themeConfig.Background2Color;
+        EditorGUILayout.BeginVertical(m_themeConfig.HeaderStyle);
+
+        EditorGUILayout.LabelField("Blackboards", m_themeConfig.HeaderStyle);
+
+        EditorGUILayout.EndVertical();
+
+        GUI.backgroundColor = m_themeConfig.Background1Color;
+        EditorGUILayout.BeginVertical(m_themeConfig.Background1Style);
+
+        Func<bool> blackboardAllowFunc = () =>
+        {
+            var selectedObjects = DragAndDrop.objectReferences;
+            return selectedObjects.Length > 0 && selectedObjects.All(x => x is BehaviourBlackboard);
+        };
+
+        if (BehaviourEditorUtility.DrawDropArea("Drop Blackboards there", DragAndDropVisualMode.Generic, blackboardAllowFunc))
+        {
+            var selectedObjects = DragAndDrop.objectReferences;
+            foreach (var obj in selectedObjects)
+            {
+                if (obj is BehaviourBlackboard blackboard)
+                {
+                    m_behaviourObject.AddBlackboard(blackboard);
+                }
+            }
+            EditorUtility.SetDirty(m_behaviourObject);
+            AssetDatabase.SaveAssets();
+        }
+
+        //Blackboards list
+
+        EditorGUILayout.BeginVertical();
+
+        Stack<BehaviourBlackboard> behaviourBlackboardsQueue = new();
+        foreach(var blackboard in m_behaviourObject.BehaviourBlackboards)
+        {
+             behaviourBlackboardsQueue.Push(blackboard);
+        }
+
+        BehaviourBlackboard blackboardToRemove = null;
+
+        foreach (var blackboard in m_behaviourObject.BehaviourBlackboards)
+        {
+            GUI.backgroundColor = m_themeConfig.ActionFieldVariableBackgroundColor;
+            EditorGUILayout.BeginHorizontal(m_themeConfig.ActionFieldStyle);
+
+            EditorGUILayout.LabelField(blackboard.name, GUILayout.Width(180));
+
+            int bufferModeCount = blackboard.BehaviourVariables.Where(x => x.VariableMode == BehaviourVariable.BehaviourVariableMode.Buffer).Count();
+            int configurableModeCount = blackboard.BehaviourVariables.Where(x => x.VariableMode == BehaviourVariable.BehaviourVariableMode.Configurable).Count();
+
+            EditorGUILayout.LabelField("Buffer: "+bufferModeCount, GUILayout.Width(100));
+            EditorGUILayout.LabelField("Configurable: "+configurableModeCount, GUILayout.Width(100));
+
+            GUI.backgroundColor = m_themeConfig.Button1Color;
+            if (GUILayout.Button("X", GUILayout.Width(40)))
+            {
+                blackboardToRemove = blackboard;
+            }
+
+            EditorGUILayout.EndHorizontal();
+
+        }
+
+        if (blackboardToRemove)
+        {
+            m_behaviourObject.RemoveBlackboard(blackboardToRemove);
+        }
+            
+        BehaviourBlackboard duplicate1 = null;
+        BehaviourBlackboard duplicate2 = null;
+
+        if(behaviourBlackboardsQueue.Count > 0) duplicate1 = behaviourBlackboardsQueue.Pop();
+
+        while(behaviourBlackboardsQueue.Count > 0)
+        {
+            duplicate2 = behaviourBlackboardsQueue.Pop();
+
+            var duplicateVariable = duplicate1.BehaviourVariables.FirstOrDefault(x => duplicate2.BehaviourVariables.Any(y => x.Name == y.Name ));
+
+            if(duplicateVariable != null)
+            {
+                EditorGUILayout.BeginVertical();
+
+                EditorGUILayout.LabelField(
+                    $"Duplicate variable '{duplicateVariable.Name}' between\n"
+                    +$"Blackboard '{duplicate1.name}' and '{duplicate2.name}'."
+                , GUILayout.Height(60));
+
+                EditorGUILayout.EndVertical();
+            }
+
+            duplicate1 = duplicate2;
+        }
+
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.EndVertical();
+    }
+
+    private void DrawInstructions()
+    {
+        //Instructions Box
+
+        GUI.backgroundColor = m_themeConfig.Background1Color;
+        EditorGUILayout.BeginVertical(m_themeConfig.InstructionStyle);
+
+        GUI.backgroundColor = m_themeConfig.Details1Color;
+        m_instructionsFoldout = EditorGUILayout.Foldout(m_instructionsFoldout, "Instructions");
+
+        if (m_instructionsFoldout)
+        {
+            EditorGUILayout.LabelField(
+                "Expand width to read fully.\n\n"
+                + "BLACKBOARDS.\n\n"
+                + "EVENTS.\n\n"
+                + "ACTIONS.\n"
+            , GUILayout.Height(260));
+        }
+        EditorGUILayout.EndVertical();
+    }
+
+    private void DrawBehaviourEvents()
+    {
+        BehaviourEventDrag currentEventDrag = (BehaviourEventDrag)DragAndDrop.GetGenericData("Behaviour Event Drag");
+
+        BehaviourEvent eventToRemove = null;
+
+        GUI.backgroundColor = m_themeConfig.Background1Color;
+        EditorGUILayout.BeginVertical(m_themeConfig.Background1Style);
+
+        var behaviourEvents = m_behaviourObject.BehaviourEvents;
+
+        for (int i = 0; i < behaviourEvents.Length; i++)
+        {
+            var behaviourEvent = behaviourEvents[i];
+
+            if(currentEventDrag == null || currentEventDrag.behaviourEvent != behaviourEvent)
+            {
+                GUI.backgroundColor = m_themeConfig.Background2Color;
+            }
+            else
+            {
+                GUI.backgroundColor = m_themeConfig.Background2Color * 0.5f + m_themeConfig.ActionDragTint * 0.5f;
+            }
+            
+            EditorGUILayout.BeginVertical(m_themeConfig.Background2Style);
+
+                EditorGUILayout.BeginHorizontal();
+            
+                    GUI.backgroundColor = m_themeConfig.ActionNameBackgroundColor;
+
+                    EditorGUILayout.LabelField(behaviourEvent.EventName, m_themeConfig.ActionNameStyle);
+
+                    GUI.backgroundColor = m_themeConfig.Button1Color;
+
+                    if (GUILayout.Button("X", GUILayout.Width(40)))
+                    {
+                        eventToRemove = behaviourEvent;
+                    }
+
+                EditorGUILayout.EndHorizontal();
+
+                DrawBehaviourEventFields(behaviourEvent);
+
+            EditorGUILayout.EndVertical();
+
+            if (BehaviourEditorUtility.LastRectClicked())
+            {
+                DragAndDrop.SetGenericData("Behaviour Event Drag", null);
+                this.Repaint();
+            }
+
+            if (BehaviourEditorUtility.LastRectDragStart())
+            {
+                DragAndDrop.PrepareStartDrag();
+                DragAndDrop.StartDrag("Behaviour Event Drag");
+
+                BehaviourEventDrag eventDrag = new();
+                eventDrag.behaviourEvent = behaviourEvent;
+
+                DragAndDrop.SetGenericData("Behaviour Event Drag", eventDrag);
+                this.Repaint();
+            }
+
+            //Before Indicator
+
+            if(currentEventDrag != null)
+            {
+                Rect lastRect = GUILayoutUtility.GetLastRect();
+                Rect indicatorRect = new Rect(lastRect.x, lastRect.y - 2, lastRect.width, 4);
+                var rectHitbox = new Rect(indicatorRect.x, indicatorRect.y-16, indicatorRect.width, 32);
+
+                if(rectHitbox.Contains(Event.current.mousePosition)) DrawIndicator(indicatorRect);
+
+                if (BehaviourEditorUtility.DropArea(rectHitbox, DragAndDropVisualMode.Move, null))
+                {
+                    int currentIndex = System.Array.IndexOf(behaviourEvents, currentEventDrag.behaviourEvent);
+                    int targetIndex;
+                    if (currentIndex < i)
+                    {
+                        targetIndex = i - 1;
+                    }
+                    else
+                    {
+                        targetIndex = i;
+                    }
+
+                    m_behaviourObject.InsertEventTo(currentEventDrag.behaviourEvent, targetIndex);
+
+                    EditorUtility.SetDirty(m_behaviourObject);
+                    AssetDatabase.SaveAssets();
+
+                    DragAndDrop.SetGenericData("Behaviour Event Drag", null);
+                    this.Repaint();
+                }
+            }
+        }
+
+        if(currentEventDrag != null)
+        {
+            Rect lastRect = GUILayoutUtility.GetLastRect();
+            Rect indicatorRect = new Rect(lastRect.x, lastRect.y + lastRect.height + 2, lastRect.width, 4);
+            var lastRectHitbox = new Rect(indicatorRect.x, indicatorRect.y-16, indicatorRect.width, 32);
+
+            if(lastRectHitbox.Contains(Event.current.mousePosition)) DrawIndicator(indicatorRect);
+
+            if (BehaviourEditorUtility.DropArea(lastRectHitbox, DragAndDropVisualMode.Move, null))
+            {
+                m_behaviourObject.InsertEventTo(currentEventDrag.behaviourEvent, behaviourEvents.Length);
+
+                EditorUtility.SetDirty(m_behaviourObject);
+                AssetDatabase.SaveAssets();
+
+                DragAndDrop.SetGenericData("Behaviour Event Drag", null);
+                this.Repaint();
+            }
+        }
+
+        if(eventToRemove != null)
+        {
+            m_behaviourObject.RemoveEvent(eventToRemove);
+
+            AssetDatabase.RemoveObjectFromAsset(eventToRemove);
+
+            EditorUtility.SetDirty(m_behaviourObject);
+            AssetDatabase.SaveAssets();
+        }
+
+        EditorGUILayout.EndVertical();
+
+    }
+
+    private void DrawBehaviourEventFields(BehaviourEvent behaviourEvent)
+    {
+        behaviourEvent.UpdateBindings();
+
+        EditorGUILayout.BeginHorizontal();
+        
+        int count = 0;
+        foreach (var eventVariable in behaviourEvent.EventVariables)
+        {
+            // New row every 2 fields
+            if (count == 2)
+            {
+                count = 0;
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginHorizontal();
+            }
+
+            EditorGUILayout.BeginHorizontal();
+
+                GUI.backgroundColor = m_themeConfig.ActionFieldVariableBackgroundColor;
+                var width = EditorGUIUtility.currentViewWidth * m_themeConfig.FieldWidthRatio;
+                EditorGUILayout.BeginHorizontal(m_themeConfig.ActionFieldStyle, GUILayout.Width(width));
+
+                    var variableDisplayName = BehaviourUtility.DisplayNameFromType(eventVariable.Type);
+
+                    EditorGUILayout.LabelField($"{behaviourEvent.EventName} [{variableDisplayName}]", GUILayout.Width(m_themeConfig.FieldLabelWidth));
+
+                EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.EndHorizontal();
+
+            count++;
+        }
+
+        EditorGUILayout.EndHorizontal();
     }
 
     private void DrawBehaviourActionBuffer(BehaviourObject behaviourObject, BehaviourActionBuffer behaviourActionBuffer)
     {
-        Rect lastRect = GUILayoutUtility.GetLastRect(); ;
-        Rect indicatorRect;
-
         BehaviourActionDrag currentActionDrag = (BehaviourActionDrag)DragAndDrop.GetGenericData("Behaviour Action Drag");
+
+        BehaviourAction actionToRemove = null;
 
         GUI.backgroundColor = m_themeConfig.Background1Color;
         EditorGUILayout.BeginVertical(m_themeConfig.Background1Style);
@@ -185,17 +498,7 @@ public class BehaviourObjectEditor : Editor
 
             if (GUILayout.Button("X", GUILayout.Width(40)))
             {
-                int removeIndex = i;
-                UnityEngine.Object actionToRemove = behaviourAction;
-
-                behaviourActionBuffer.RemoveAt(removeIndex);
-
-                DestroyImmediate(actionToRemove, true);
-
-                EditorUtility.SetDirty(behaviourObject);
-                AssetDatabase.SaveAssets();
-
-                break;
+                actionToRemove = behaviourAction;
             }
 
             EditorGUILayout.EndHorizontal();
@@ -224,11 +527,10 @@ public class BehaviourObjectEditor : Editor
 
             //Before Indicator
 
-            lastRect = GUILayoutUtility.GetLastRect();
-
             if(currentActionDrag != null)
             {
-                indicatorRect = new Rect(lastRect.x, lastRect.y - 2, lastRect.width, 4);
+                Rect lastRect = GUILayoutUtility.GetLastRect();
+                Rect indicatorRect = new Rect(lastRect.x, lastRect.y - 2, lastRect.width, 4);
                 var rectHitbox = new Rect(indicatorRect.x, indicatorRect.y-16, indicatorRect.width, 32);
 
                 if(rectHitbox.Contains(Event.current.mousePosition)) DrawIndicator(indicatorRect);
@@ -259,7 +561,8 @@ public class BehaviourObjectEditor : Editor
 
         if(currentActionDrag != null)
         {
-            indicatorRect = new Rect(lastRect.x, lastRect.y + lastRect.height + 2, lastRect.width, 4);
+            Rect lastRect = GUILayoutUtility.GetLastRect();
+            Rect indicatorRect = new Rect(lastRect.x, lastRect.y + lastRect.height + 2, lastRect.width, 4);
             var lastRectHitbox = new Rect(indicatorRect.x, indicatorRect.y-16, indicatorRect.width, 32);
 
             if(lastRectHitbox.Contains(Event.current.mousePosition)) DrawIndicator(indicatorRect);
@@ -274,6 +577,16 @@ public class BehaviourObjectEditor : Editor
                 DragAndDrop.SetGenericData("Behaviour Action Drag", null);
                 this.Repaint();
             }
+        }
+
+        if(actionToRemove != null)
+        {
+            m_behaviourObject.RemoveAction(actionToRemove);
+
+            AssetDatabase.RemoveObjectFromAsset(actionToRemove);
+
+            EditorUtility.SetDirty(behaviourObject);
+            AssetDatabase.SaveAssets();
         }
 
         EditorGUILayout.EndVertical();
@@ -386,7 +699,41 @@ public class BehaviourObjectEditor : Editor
 
         GUI.backgroundColor = m_themeConfig.Button1Color;
 
-        EditorGUILayout.Popup(0, new string[0]);
+        List<string> variableStringOptions = new();
+        List<string> variableCategorizedOptions = new();
+
+        foreach(var blackboard in m_behaviourObject.BehaviourBlackboards)
+        {
+            foreach(var variable in blackboard.BehaviourVariables)
+            {
+                if(actionVariable.ReadMode == IBehaviourActionReadMode.Output && variable.VariableMode == BehaviourVariable.BehaviourVariableMode.Configurable) continue;
+                variableStringOptions.Add(variable.Name);
+                variableCategorizedOptions.Add(blackboard.name+"/"+variable.Name);
+            }
+        }
+
+        var currentVariableIndex = variableStringOptions.IndexOf(actionVariable.TargetVariableName);
+
+        if(currentVariableIndex != -1)
+        {
+            var resultIndex = EditorGUILayout.Popup(currentVariableIndex, variableCategorizedOptions.ToArray());
+
+            if(resultIndex != currentVariableIndex)
+            {
+                actionVariable.TargetVariableName = variableStringOptions[resultIndex];
+            }
+        }
+        else
+        {
+            variableCategorizedOptions.Insert(0, $"NOT FOUND ({actionVariable.TargetVariableName})");
+
+            var resultIndex = EditorGUILayout.Popup(currentVariableIndex, variableCategorizedOptions.ToArray());
+
+            if(resultIndex != currentVariableIndex && resultIndex != -1)
+            {
+                actionVariable.TargetVariableName = variableStringOptions[resultIndex-1];
+            }
+        }
 
         EditorGUILayout.EndHorizontal();
     }

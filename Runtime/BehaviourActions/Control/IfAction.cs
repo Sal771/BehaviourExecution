@@ -5,7 +5,7 @@ public class IfAction : BehaviourAction
 {
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        actionContext.DeclareVariable<bool>("Condition");
+        actionContext.DeclareVariable<bool>("Condition", IBehaviourActionReadMode.Input);
         actionContext.DeclareActionBuffer("True Actions");
         actionContext.DeclareActionBuffer("False Actions");
     }

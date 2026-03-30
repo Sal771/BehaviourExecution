@@ -33,7 +33,7 @@ namespace com.Sal77.BehaviourExecution
         [SerializeField] private List<BehaviourNumberOption> m_numberOptions = new();
         [SerializeField] private string m_actionGuid;
         
-        private Dictionary<string, string> m_targetVariableCache = new();
+        private Dictionary<string, string> m_variableCache = new();
         private Dictionary<string, int> m_enumIndexCache = new();
         private Dictionary<string, BehaviourAction[]> m_actionBufferCache = new();
         private Dictionary<string, int> m_numberOptionCache = new();
@@ -49,7 +49,7 @@ namespace com.Sal77.BehaviourExecution
 
         public void UpdateBindings()
         {
-            m_actionVariables.Clear();
+            m_variableCache.Clear();
             m_enumIndexCache.Clear();
             m_actionBufferCache.Clear();
             m_numberOptionCache.Clear();
@@ -59,7 +59,7 @@ namespace com.Sal77.BehaviourExecution
                 if(variable == null) continue;
                 if(variable.Name == String.Empty) continue;
 
-                m_targetVariableCache.Add(variable.Name, variable.TargetVariableName);
+                m_variableCache.Add(variable.Name, variable.TargetVariableName);
             }
             foreach(var actionEnum in m_actionEnums){
                 if(actionEnum == null) continue;
@@ -84,16 +84,17 @@ namespace com.Sal77.BehaviourExecution
             m_actionEnums.Clear();
             m_actionBuffers.Clear();
             m_numberOptions.Clear();
+            m_actionFieldsCount = 0;
 
             DefineBindings(this);
         }
         protected abstract void DefineBindings(IBehaviourAction actionContext);
-        public void DeclareVariable<T>(string name)
+        public void DeclareVariable<T>(string name, IBehaviourActionReadMode readMode)
         {
-            var behaviourActionVariable = new BehaviourActionVariable(name, typeof(T));
+            var behaviourActionVariable = new BehaviourActionVariable(name, typeof(T), readMode);
             behaviourActionVariable.OrderIndex = m_actionFieldsCount;
 
-            if(m_targetVariableCache.TryGetValue(name, out string targetVariableName))
+            if(m_variableCache.TryGetValue(name, out string targetVariableName))
             {
                 behaviourActionVariable.TargetVariableName = targetVariableName;
             }

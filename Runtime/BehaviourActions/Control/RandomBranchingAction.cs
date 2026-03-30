@@ -11,7 +11,7 @@ public class RandomBranchingAction : BehaviourAction
         for(int i=0; i<m_branchAmount; i++)
         {
             actionContext.DeclareActionBuffer("Branch " + i);
-            actionContext.DeclareVariable<float>("Weight " + i);
+            actionContext.DeclareVariable<float>("Weight " + i, IBehaviourActionReadMode.Input);
         }
     }
 

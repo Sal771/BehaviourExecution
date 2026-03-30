@@ -23,24 +23,24 @@ public class MathRoundAction : BehaviourAction
 
         if (m_numberTypeIndex == (int)NumberType.Float )
         {
-            actionContext.DeclareVariable<float>("Number");
-            actionContext.DeclareVariable<float>("Round Interval");
+            actionContext.DeclareVariable<float>("Number", IBehaviourActionReadMode.Input);
+            actionContext.DeclareVariable<float>("Round Interval", IBehaviourActionReadMode.Input);
         }
         else
         {
-            actionContext.DeclareVariable<int>("Number");
-            actionContext.DeclareVariable<int>("Round Interval");
+            actionContext.DeclareVariable<int>("Number", IBehaviourActionReadMode.Input);
+            actionContext.DeclareVariable<int>("Round Interval", IBehaviourActionReadMode.Input);
         }
         
         m_roundModeIndex = actionContext.DeclareEnum<RoundMode>("Round Mode");
 
         if (m_numberTypeIndex == (int)NumberType.Float )
         {
-            actionContext.DeclareVariable<float>("Output");
+            actionContext.DeclareVariable<float>("Output", IBehaviourActionReadMode.Output);
         }
         else
         {
-            actionContext.DeclareVariable<int>("Output");
+            actionContext.DeclareVariable<int>("Output", IBehaviourActionReadMode.Output);
         }
     }
 

@@ -8,6 +8,7 @@ public class GetStatAction : BehaviourAction
 {
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
+        //TODO Get Stat
         throw new NotImplementedException();
     }
 

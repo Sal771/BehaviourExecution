@@ -6,8 +6,8 @@ public class ExecuteBehaviourObjectAction : BehaviourAction
 {
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        actionContext.DeclareVariable<BehaviourObject>("Behaviour Object");
-        actionContext.DeclareVariable<GameObject>("Game Object");
+        actionContext.DeclareVariable<BehaviourObject>("Behaviour Object", IBehaviourActionReadMode.Input);
+        actionContext.DeclareVariable<GameObject>("Game Object", IBehaviourActionReadMode.Input);
     }
 
     protected override string GetActionName()

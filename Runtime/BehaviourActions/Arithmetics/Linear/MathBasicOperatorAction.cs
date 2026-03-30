@@ -24,24 +24,24 @@ public class MathBasicOperatorAction : BehaviourAction
 
         if(m_numberTypeIndex == (int)NumberType.Float)
         {
-            actionContext.DeclareVariable<float>("Number1");
-            actionContext.DeclareVariable<float>("Number2");
+            actionContext.DeclareVariable<float>("Number1", IBehaviourActionReadMode.Input);
+            actionContext.DeclareVariable<float>("Number2", IBehaviourActionReadMode.Input);
         }
         else
         {
-            actionContext.DeclareVariable<int>("Number1");
-            actionContext.DeclareVariable<int>("Number2");
+            actionContext.DeclareVariable<int>("Number1", IBehaviourActionReadMode.Input);
+            actionContext.DeclareVariable<int>("Number2", IBehaviourActionReadMode.Input);
         }
         
         m_operationTypeIndex = actionContext.DeclareEnum<OperationType>("Operation Type");
 
         if(m_numberTypeIndex == (int)NumberType.Float)
         {
-            actionContext.DeclareVariable<float>("Result");
+            actionContext.DeclareVariable<float>("Result", IBehaviourActionReadMode.Output);
         }
         else
         {
-            actionContext.DeclareVariable<int>("Result");
+            actionContext.DeclareVariable<int>("Result", IBehaviourActionReadMode.Output);
         }
     }
 

@@ -7,9 +7,9 @@ public class DistanceBetweenPositionsAction : BehaviourAction
 {
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        actionContext.DeclareVariable<Vector3>("PositionA");
-        actionContext.DeclareVariable<Vector3>("PositionB");
-        actionContext.DeclareVariable<float>("Result");
+        actionContext.DeclareVariable<Vector3>("PositionA", IBehaviourActionReadMode.Input);
+        actionContext.DeclareVariable<Vector3>("PositionB", IBehaviourActionReadMode.Input);
+        actionContext.DeclareVariable<float>("Result", IBehaviourActionReadMode.Output);
     }
 
     public override ExecutionActionResult Execute(IBehaviourExecution executionContext)

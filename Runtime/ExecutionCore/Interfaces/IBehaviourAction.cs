@@ -7,7 +7,7 @@ namespace com.Sal77.BehaviourExecution
 {
     public interface IBehaviourAction
     {
-       public void DeclareVariable<T>(string name);
+       public void DeclareVariable<T>(string name, IBehaviourActionReadMode readMode);
        public int DeclareEnum<T>(string name);
        public void DeclareActionBuffer(string name);
        public int DeclareNumberOption(string name);

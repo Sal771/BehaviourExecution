@@ -6,7 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-## [0.2.1]
+## [0.2.2] - 2026-3-30
+
+### Added
+
+- Added Blackboard menu to the BehaviourObjectEditor with drag and drop support.
+- Added Events menu to the BehaviourObjectEditor with drag and drop support.
+- Added back the ability to assign a variable field on a blackboard variable.
+- Enabled the support for the simplemost functionality back to the execution component.
+- Completed 'HelloBehaviour' Sample Scene
+
+### Changed
+
+- Added a parameter for the BehaviourAction 'Variable' declaration interface to now have ReadMode for input and output
+Configurable variables won't be targetted by output variable fields.
+- Cleaned up 'HelloBehaviour' assets folder
+
+## [0.2.1] - 2026-3-23
 
 ### Changed
 
@@ -15,7 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Fixed meta files.
 - Fixed ChooseRandomListExtension missing.
 
-## [0.2.0]
+## [0.2.0] - 2026-3-23
 
 ### Added
 
@@ -48,7 +64,7 @@ you can extend BehaviourType and have it available in BehaviourUtility.
 - BehaviourConstant and BehaviourBinding, replaced purely with BehaviourVariables configurable variable mode.
 - BehaviourSources, as part of the variables reword.
 
-## [0.1.0]
+## [0.1.0] - 2026-3-6
 
 ### Added
 

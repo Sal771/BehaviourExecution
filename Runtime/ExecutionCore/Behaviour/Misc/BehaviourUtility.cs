@@ -142,14 +142,6 @@ namespace com.Sal77.BehaviourExecution
         public static Type ActionTypeFromCategorized(string actionCategorized)
         {
             InitializeActionsCache();
-            foreach(var categorized in s_actionsCategorizedCache)
-            {
-                Debug.Log($"Categorized '{categorized.Key}' '{categorized.Value}'");
-            }
-            foreach(var normal in s_actionsCache)
-            {
-                Debug.Log($"Normal '{normal.Key}' '{normal.Value}'");
-            }
             if (s_actionsCategorizedCache.TryGetValue(actionCategorized, out var name))
             {
                 return ActionTypeFromName(name);

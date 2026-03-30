@@ -68,7 +68,7 @@ public static class BehaviourEditorUtility
 
     public static bool DrawDropArea(string label, DragAndDropVisualMode defaultDropMode, Func<bool> allowFunc, params GUILayoutOption[] options)
     {
-        var rect = GUILayoutUtility.GetRect(0, 50f, options);
+        var rect = GUILayoutUtility.GetRect(50f, 50f, options);
         GUI.Box(rect, label);
 
         return DropArea(rect, defaultDropMode, allowFunc);

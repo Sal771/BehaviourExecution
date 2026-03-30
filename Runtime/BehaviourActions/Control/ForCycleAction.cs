@@ -5,7 +5,7 @@ public class ForCycleAction : BehaviourAction
 {
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        actionContext.DeclareVariable<int>("Iteration Count");
+        actionContext.DeclareVariable<int>("Iteration Count", IBehaviourActionReadMode.Input);
         actionContext.DeclareActionBuffer("Loop Actions");
     }
 
