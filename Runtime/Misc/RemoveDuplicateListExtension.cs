@@ -32,7 +32,7 @@ public static class RemoveDuplicateListExtension
         {
             for(int j = list.Count() - 1; j>0; j--)
             {
-                if(i==j) continue;
+                if(i==j || list[i] == null || list[j] == null) continue;
 
                 if(list[i].Equals(list[j])){
                     removedInstances.Add(list[j]);

@@ -13,7 +13,13 @@ MonoBehaviour:
   m_Name: DebugLogAction_db9546c8-14cf-46b1-a007-5ab554453900
   m_EditorClassIdentifier: com.Sal77.BehaviourExecution.Runtime::DebugLogAction
   m_nextAction: {fileID: 0}
-  m_actionVariables: []
+  m_actionVariables:
+  - m_orderIndex: 0
+    m_variableName: Text
+    m_serializedVariableType: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+      PublicKeyToken=b77a5c561934e089
+    m_targetVariableName: Text
+    m_readMode: 0
   m_actionEnums: []
   m_actionBuffers: []
   m_numberOptions: []
@@ -37,4 +43,4 @@ MonoBehaviour:
     - {fileID: -2310285938595582090}
     m_name: Actions
   m_behaviourBlackboards:
-  - {fileID: 11400000, guid: a38746bfc8296824f86e6af36d622f73, type: 2}
+  - {fileID: 11400000, guid: d2f658aa6eb384942a2f994ddc5cab56, type: 2}

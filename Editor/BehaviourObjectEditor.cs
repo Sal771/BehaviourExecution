@@ -19,7 +19,8 @@ public class BehaviourObjectEditor : Editor
     private List<BehaviourAction> m_selectedActions = new();
     private BehaviourExecutionThemeConfig m_themeConfig;
     private BehaviourObject m_behaviourObject;
-    private BehaviourActionBuffer m_behaviourActionBuffer;
+    private BehaviourActionBuffer m_currentActionBuffer;
+    private BehaviourAction m_currentAction;
 
     public class BehaviourActionDrag
     {
@@ -39,7 +40,6 @@ public class BehaviourObjectEditor : Editor
         }
 
         m_behaviourObject = (BehaviourObject)target;
-        m_behaviourActionBuffer = m_behaviourObject.BehaviourActionBuffer;
 
         m_behaviourObject.Validate();
 
@@ -116,7 +116,8 @@ public class BehaviourObjectEditor : Editor
 
         EditorGUILayout.EndHorizontal();
 
-        DrawBehaviourActionBuffer(m_behaviourObject, m_behaviourActionBuffer);
+        m_currentActionBuffer = m_behaviourObject.BehaviourActionBuffer;
+        DrawBehaviourActionBuffer(m_behaviourObject, m_currentActionBuffer);
 
         EditorGUILayout.EndVertical();
     }
@@ -221,8 +222,8 @@ public class BehaviourObjectEditor : Editor
 
             EditorGUILayout.LabelField(blackboard.name, GUILayout.Width(180));
 
-            int bufferModeCount = blackboard.BehaviourVariables.Where(x => x.VariableMode == BehaviourVariable.BehaviourVariableMode.Buffer).Count();
-            int configurableModeCount = blackboard.BehaviourVariables.Where(x => x.VariableMode == BehaviourVariable.BehaviourVariableMode.Configurable).Count();
+            int bufferModeCount = blackboard.BehaviourVariables.Count(x => x.VariableMode == BehaviourVariableMode.Buffer);
+            int configurableModeCount = blackboard.BehaviourVariables.Count(x => x.VariableMode == BehaviourVariableMode.Configurable);
 
             EditorGUILayout.LabelField("Buffer: "+bufferModeCount, GUILayout.Width(100));
             EditorGUILayout.LabelField("Configurable: "+configurableModeCount, GUILayout.Width(100));
@@ -706,7 +707,7 @@ public class BehaviourObjectEditor : Editor
         {
             foreach(var variable in blackboard.BehaviourVariables)
             {
-                if(actionVariable.ReadMode == IBehaviourActionReadMode.Output && variable.VariableMode == BehaviourVariable.BehaviourVariableMode.Configurable) continue;
+                if(actionVariable.ReadMode == IBehaviourActionReadMode.Output && variable.VariableMode == BehaviourVariableMode.Configurable) continue;
                 variableStringOptions.Add(variable.Name);
                 variableCategorizedOptions.Add(blackboard.name+"/"+variable.Name);
             }
@@ -721,6 +722,9 @@ public class BehaviourObjectEditor : Editor
             if(resultIndex != currentVariableIndex)
             {
                 actionVariable.TargetVariableName = variableStringOptions[resultIndex];
+
+                EditorUtility.SetDirty(m_behaviourObject);
+                AssetDatabase.SaveAssets();
             }
         }
         else
@@ -747,7 +751,14 @@ public class BehaviourObjectEditor : Editor
         EditorGUILayout.LabelField($"{actionEnum.Name}", GUILayout.Width(m_themeConfig.FieldLabelWidth));
 
         GUI.backgroundColor = m_themeConfig.Button1Color;
+        int beforeEnum = actionEnum.CurrentOptionIndex;
         actionEnum.CurrentOptionIndex = EditorGUILayout.Popup(actionEnum.CurrentOptionIndex, actionEnum.Options);
+
+        if(beforeEnum != actionEnum.CurrentOptionIndex)
+        {
+            EditorUtility.SetDirty(m_behaviourObject);
+            AssetDatabase.SaveAssets();
+        }
     
         EditorGUILayout.EndHorizontal();
     }
@@ -773,7 +784,14 @@ public class BehaviourObjectEditor : Editor
         GUILayout.FlexibleSpace();
         
         GUI.backgroundColor = m_themeConfig.Button1Color;
+        int beforeOption = actionNumberOption.Value;
         actionNumberOption.Value = EditorGUILayout.IntField(actionNumberOption.Value);
+
+        if(beforeOption != actionNumberOption.Value)
+        {
+            EditorUtility.SetDirty(m_behaviourObject);
+            AssetDatabase.SaveAssets();
+        }
 
         EditorGUILayout.EndHorizontal();
     }

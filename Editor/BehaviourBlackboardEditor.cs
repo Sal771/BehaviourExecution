@@ -181,11 +181,29 @@ public class BehaviourBlackboardEditor : Editor
 
         GUI.backgroundColor = m_themeConfig.Button1Color;
 
-        var variableModeOptions = Enum.GetNames(typeof(BehaviourVariable.BehaviourVariableMode));
+        var variableModeOptions = Enum.GetNames(typeof(BehaviourVariableMode));
         var currentVariableMode = (int)behaviourVariable.VariableMode;
-        behaviourVariable.VariableMode = (BehaviourVariable.BehaviourVariableMode) EditorGUILayout.Popup((int)behaviourVariable.VariableMode, variableModeOptions, GUILayout.Width(80));
+        var beforeVariableMode = behaviourVariable.VariableMode;
 
-        if(behaviourVariable.VariableMode == BehaviourVariable.BehaviourVariableMode.Configurable) behaviourVariable.MultiTypeValue.DrawField("", GUILayout.ExpandWidth(true));
+        behaviourVariable.VariableMode = (BehaviourVariableMode) EditorGUILayout.Popup((int)behaviourVariable.VariableMode, variableModeOptions, GUILayout.Width(80));
+
+        if(beforeVariableMode != behaviourVariable.VariableMode)
+        {
+            EditorUtility.SetDirty(behaviourBlackboard);
+            AssetDatabase.SaveAssets();
+        }
+
+        if(behaviourVariable.VariableMode == BehaviourVariableMode.Configurable)
+        {
+            var beforeValue = behaviourVariable.MultiTypeValue.GetValue();
+            behaviourVariable.MultiTypeValue.DrawField("", GUILayout.ExpandWidth(true));
+
+            if(beforeValue != behaviourVariable.MultiTypeValue.GetValue())
+            {
+                EditorUtility.SetDirty(behaviourBlackboard);
+                AssetDatabase.SaveAssets();
+            }
+        }
 
         EditorGUILayout.EndHorizontal();
 

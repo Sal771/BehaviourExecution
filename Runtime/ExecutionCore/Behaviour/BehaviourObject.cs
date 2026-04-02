@@ -62,6 +62,8 @@ namespace com.Sal77.BehaviourExecution
             var removedBlackboards = m_behaviourBlackboards.RemoveDuplicates();
             var removedEvents = m_behaviourEvents.RemoveDuplicates((source, index) => {return source.EventName;});
 
+            m_behaviourBlackboards.RemoveAll(x => x == null);
+
             #if UNITY_EDITOR
 
             bool removed = false;

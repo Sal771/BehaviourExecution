@@ -11,19 +11,24 @@ namespace com.Sal77.BehaviourExecution
             get => m_name;
             set => m_name = value;
         }
-        public Type Type => m_multiTypeValue.Type;
-        public MultiTypeObject MultiTypeValue => m_multiTypeValue;
-        public BehaviourVariableMode VariableMode {get { return m_variableMode; } set{ m_variableMode = value; }}
+        public Type Type => MultiTypeValue.Type;
+        public MultiTypeObject MultiTypeValue
+        {
+            get
+            {
+                if(m_multiTypeValue == null)
+                {
+                    m_multiTypeValue = new();
+                }
+
+                return m_multiTypeValue;
+            }
+        }
+        public BehaviourVariableMode VariableMode { get {return m_variableMode;} set {m_variableMode = value;} }
 
         [SerializeField] private string m_name;
-        [SerializeField] private MultiTypeObject m_multiTypeValue = new();
+        [SerializeField] private MultiTypeObject m_multiTypeValue;
         [SerializeField] private BehaviourVariableMode m_variableMode;
-
-        public enum BehaviourVariableMode
-        {
-            Buffer,
-            Configurable
-        }
 
         public BehaviourVariable(string name, Type type)
         {

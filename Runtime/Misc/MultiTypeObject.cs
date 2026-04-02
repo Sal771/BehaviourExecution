@@ -26,30 +26,19 @@ namespace com.Sal77.BehaviourExecution
             set => SetType(value);
         }
 
-        [SerializeField] private TypeMode m_typeMode;
+        [SerializeField] private MultiTypeObjectMode m_typeMode;
         [SerializeField] private Type m_type;
         [SerializeField] private string m_serializedType;
 
         [SerializeField] private UnityEngine.Object m_objectValue;
         [SerializeField] private int m_intValue;
         [SerializeField] private float m_floatValue;
+        [SerializeField] private float MultiTypeObjectModem_floatValue;
         [SerializeField] private bool m_boolValue;
         [SerializeField] private string m_stringValue;
         [SerializeField] private Vector2 m_vector2Value;
         [SerializeField] private Vector3  m_vector3Value;
         [SerializeField] private Color m_colorValue;
-        public enum TypeMode
-        {
-            Object,
-            Int,
-            Float,
-            Bool,
-            String,
-            Vector2,
-            Vector3,
-            Color
-        }
-
         #if UNITY_EDITOR
         /// <summary>
         /// Draw the multi-type object within a OnInspectorGUI
@@ -58,28 +47,28 @@ namespace com.Sal77.BehaviourExecution
         {
             switch (m_typeMode)
             {
-                case TypeMode.Object:
+                case MultiTypeObjectMode.Object:
                     m_objectValue = EditorGUILayout.ObjectField(label, m_objectValue, Type, false, options);
                     return;
-                case TypeMode.Int:
+                case MultiTypeObjectMode.Int:
                     m_intValue = EditorGUILayout.IntField(label, m_intValue, options);
                     return;
-                case TypeMode.Float:
+                case MultiTypeObjectMode.Float:
                     m_floatValue = EditorGUILayout.FloatField(label, m_floatValue, options);
                     return;
-                case TypeMode.Bool:
+                case MultiTypeObjectMode.Bool:
                     m_boolValue = EditorGUILayout.Toggle(label, m_boolValue, options);
                     return;
-                    case TypeMode.String:
+                    case MultiTypeObjectMode.String:
                     m_stringValue = EditorGUILayout.TextField(label, m_stringValue, options);
                     return;
-                case TypeMode.Vector2:
+                case MultiTypeObjectMode.Vector2:
                     m_vector2Value = EditorGUILayout.Vector2Field(label, m_vector2Value, options);
                     return;
-                case TypeMode.Vector3:
+                case MultiTypeObjectMode.Vector3:
                     m_vector3Value = EditorGUILayout.Vector3Field(label, m_vector3Value, options);
                     return;
-                case TypeMode.Color:
+                case MultiTypeObjectMode.Color:
                     m_colorValue = EditorGUILayout.ColorField(label, m_colorValue, options);
                     return;
             }
@@ -90,55 +79,55 @@ namespace com.Sal77.BehaviourExecution
         {
             if(typeof(UnityEngine.Object).IsAssignableFrom(type))
             {
-                m_typeMode = TypeMode.Object;
+                m_typeMode = MultiTypeObjectMode.Object;
                 m_type = type;
                 m_serializedType = type.AssemblyQualifiedName;
             }
             if(type == typeof(int))
             {
-                m_typeMode = TypeMode.Int;
+                m_typeMode = MultiTypeObjectMode.Int;
                 m_type = type;
                 m_serializedType = type.AssemblyQualifiedName;
                 return;
             }
             if(type == typeof(float))
             {
-                m_typeMode = TypeMode.Float;
+                m_typeMode = MultiTypeObjectMode.Float;
                 m_type = type;
                 m_serializedType = type.AssemblyQualifiedName;
                 return;
             }
             if(type == typeof(bool))
             {
-                m_typeMode = TypeMode.Bool;
+                m_typeMode = MultiTypeObjectMode.Bool;
                 m_type = type;
                 m_serializedType = type.AssemblyQualifiedName;
                 return;
             }
             if(type == typeof(string))
             {
-                m_typeMode = TypeMode.String;
+                m_typeMode = MultiTypeObjectMode.String;
                 m_type = type;
                 m_serializedType = type.AssemblyQualifiedName;
                 return;
             }
             if(type == typeof(Vector2))
             {
-                m_typeMode = TypeMode.Vector2;
+                m_typeMode = MultiTypeObjectMode.Vector2;
                 m_type = type;
                 m_serializedType = type.AssemblyQualifiedName;
                 return;
             }
             if(type == typeof(Vector3))
             {
-                m_typeMode = TypeMode.Vector3;
+                m_typeMode = MultiTypeObjectMode.Vector3;
                 m_type = type;
                 m_serializedType = type.AssemblyQualifiedName;
                 return;
             }
             if(type == typeof(Color))
             {
-                m_typeMode = TypeMode.Color;
+                m_typeMode = MultiTypeObjectMode.Color;
                 m_type = type;
                 m_serializedType = type.AssemblyQualifiedName;
                 return;
@@ -161,21 +150,21 @@ namespace com.Sal77.BehaviourExecution
 
             switch (m_typeMode)
             {
-                case TypeMode.Object:
+                case MultiTypeObjectMode.Object:
                     return m_objectValue;
-                case TypeMode.Int:
+                case MultiTypeObjectMode.Int:
                     return m_intValue;
-                case TypeMode.Float:
+                case MultiTypeObjectMode.Float:
                     return m_floatValue;
-                case TypeMode.Bool:
+                case MultiTypeObjectMode.Bool:
                     return m_boolValue;
-                case TypeMode.String:
+                case MultiTypeObjectMode.String:
                     return m_stringValue;
-                case TypeMode.Vector2:
+                case MultiTypeObjectMode.Vector2:
                     return m_vector2Value;
-                case TypeMode.Vector3:
+                case MultiTypeObjectMode.Vector3:
                     return m_vector3Value;
-                case TypeMode.Color:
+                case MultiTypeObjectMode.Color:
                     return m_colorValue;
             }
             throw new Exception($"Multitype Object of type '{m_type}' attempted to read with the not available request type '{type}'");
@@ -193,28 +182,28 @@ namespace com.Sal77.BehaviourExecution
             
             switch (m_typeMode)
             {
-                case TypeMode.Object:
+                case MultiTypeObjectMode.Object:
                     m_objectValue = (UnityEngine.Object)value;
                     return;
-                case TypeMode.Int:
+                case MultiTypeObjectMode.Int:
                     m_intValue = (int)value;
                     return;
-                case TypeMode.Float:
+                case MultiTypeObjectMode.Float:
                     m_floatValue = (float)value;
                     return;
-                case TypeMode.Bool:
+                case MultiTypeObjectMode.Bool:
                     m_boolValue = (bool)value;
                     return;
-                case TypeMode.String:
+                case MultiTypeObjectMode.String:
                     m_stringValue = (string)value;
                     return;
-                case TypeMode.Vector2:
+                case MultiTypeObjectMode.Vector2:
                     m_vector2Value = (Vector2)value;
                     return;
-                case TypeMode.Vector3:
+                case MultiTypeObjectMode.Vector3:
                     m_vector3Value = (Vector3)value;
                     return;
-                case TypeMode.Color:
+                case MultiTypeObjectMode.Color:
                     m_colorValue = (Color)value;
                     return;
             }
@@ -224,28 +213,28 @@ namespace com.Sal77.BehaviourExecution
         {
             switch (m_typeMode)
             {
-                case TypeMode.Object:
+                case MultiTypeObjectMode.Object:
                     m_objectValue = multiTypeObject.m_objectValue;
                     return;
-                case TypeMode.Int:
+                case MultiTypeObjectMode.Int:
                     m_intValue = multiTypeObject.m_intValue;
                     return;
-                case TypeMode.Float:
+                case MultiTypeObjectMode.Float:
                     m_floatValue = multiTypeObject.m_floatValue;
                     return;
-                case TypeMode.Bool:
+                case MultiTypeObjectMode.Bool:
                     m_boolValue = multiTypeObject.m_boolValue;
                     return;
-                case TypeMode.String:
+                case MultiTypeObjectMode.String:
                     m_stringValue = multiTypeObject.m_stringValue;
                     return;
-                case TypeMode.Vector2:
+                case MultiTypeObjectMode.Vector2:
                     m_vector2Value = multiTypeObject.m_vector2Value;
                     return;
-                case TypeMode.Vector3:
+                case MultiTypeObjectMode.Vector3:
                     m_vector3Value = multiTypeObject.m_vector3Value;
                     return;
-                case TypeMode.Color:
+                case MultiTypeObjectMode.Color:
                     m_colorValue = multiTypeObject.m_colorValue;
                     return;
             }
@@ -255,27 +244,27 @@ namespace com.Sal77.BehaviourExecution
         {
             switch (m_typeMode)
             {
-                case TypeMode.Object:
+                case MultiTypeObjectMode.Object:
                     return;
-                case TypeMode.Int:
+                case MultiTypeObjectMode.Int:
                     m_intValue = 0;
                     return;
-                case TypeMode.Float:
+                case MultiTypeObjectMode.Float:
                     m_floatValue = 0f;
                     return;
-                case TypeMode.Bool:
+                case MultiTypeObjectMode.Bool:
                     m_boolValue = false;
                     return;
-                case TypeMode.String:
+                case MultiTypeObjectMode.String:
                     m_stringValue = String.Empty;
                     return;
-                case TypeMode.Vector2:
+                case MultiTypeObjectMode.Vector2:
                     m_vector2Value = Vector2.zero;
                     return;
-                case TypeMode.Vector3:
+                case MultiTypeObjectMode.Vector3:
                     m_vector3Value = Vector3.zero;
                     return;
-                case TypeMode.Color:
+                case MultiTypeObjectMode.Color:
                     m_colorValue = Color.white;
                     return;
             }

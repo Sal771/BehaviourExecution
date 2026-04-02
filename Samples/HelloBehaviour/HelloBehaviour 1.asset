@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74beb7f6091360544be4144fcffd022a, type: 3}
-  m_Name: HelloBehaviourConfig
+  m_Name: HelloBehaviour 1
   m_EditorClassIdentifier: com.Sal77.BehaviourExecution.Runtime::com.Sal77.BehaviourExecution.BehaviourBlackboard
   m_behaviourVariables:
   - m_name: Text
@@ -21,9 +21,10 @@ MonoBehaviour:
       m_objectValue: {fileID: 0}
       m_intValue: 0
       m_floatValue: 0
+      MultiTypeObjectModem_floatValue: 0
       m_boolValue: 0
-      m_stringValue: 
+      m_stringValue: Testo
       m_vector2Value: {x: 0, y: 0}
       m_vector3Value: {x: 0, y: 0, z: 0}
       m_colorValue: {r: 0, g: 0, b: 0, a: 0}
-    m_variableMode: 0
+    m_variableMode: 1

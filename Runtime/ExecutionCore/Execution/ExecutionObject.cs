@@ -223,7 +223,7 @@ namespace com.Sal77.BehaviourExecution
             {
                 foreach(var variable in blackboard.BehaviourVariables)
                 {
-                    if (variable.VariableMode == BehaviourVariable.BehaviourVariableMode.Configurable)
+                    if (variable.VariableMode == BehaviourVariableMode.Configurable)
                     {
                         WriteVariable(variable.Name, variable.MultiTypeValue);
                     }
