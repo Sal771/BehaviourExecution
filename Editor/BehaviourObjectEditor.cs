@@ -43,6 +43,11 @@ public class BehaviourObjectEditor : Editor
 
         m_behaviourObject.Validate();
 
+        if(m_currentActionBuffer == null)
+        {
+            m_currentActionBuffer = m_behaviourObject.BehaviourActionBuffer;
+        }
+
         DrawInstructions();
 
         EditorGUILayout.Space();
@@ -77,6 +82,25 @@ public class BehaviourObjectEditor : Editor
 
         EditorGUILayout.EndVertical();
 
+        //Inner Buffer Header
+
+        if (m_currentActionBuffer != m_behaviourObject.BehaviourActionBuffer)
+        {
+            GUI.backgroundColor = m_themeConfig.ActionFieldActionBufferBackgroundColor;
+            EditorGUILayout.BeginHorizontal(m_themeConfig.HeaderStyle);
+
+            EditorGUILayout.LabelField($"Editing Buffer: '{m_behaviourObject.name}'", m_themeConfig.ActionFieldStyle);
+
+            if (GUILayout.Button("Exit"))
+            {
+                m_currentActionBuffer = m_behaviourObject.BehaviourActionBuffer;
+            }
+
+            EditorGUILayout.EndHorizontal();
+        }
+
+        //Main Body
+
         GUI.backgroundColor = m_themeConfig.Background1Color;
         EditorGUILayout.BeginVertical(m_themeConfig.Background1Style, GUILayout.MinHeight(120));
 
@@ -94,7 +118,7 @@ public class BehaviourObjectEditor : Editor
 
             AssetDatabase.AddObjectToAsset(action, m_behaviourObject);
 
-            m_behaviourObject.AddAction(action);
+            m_currentActionBuffer.Add(action);
 
             EditorUtility.SetDirty(m_behaviourObject);
             AssetDatabase.SaveAssets();
@@ -116,7 +140,6 @@ public class BehaviourObjectEditor : Editor
 
         EditorGUILayout.EndHorizontal();
 
-        m_currentActionBuffer = m_behaviourObject.BehaviourActionBuffer;
         DrawBehaviourActionBuffer(m_behaviourObject, m_currentActionBuffer);
 
         EditorGUILayout.EndVertical();
@@ -473,7 +496,7 @@ public class BehaviourObjectEditor : Editor
         GUI.backgroundColor = m_themeConfig.Background1Color;
         EditorGUILayout.BeginVertical(m_themeConfig.Background1Style);
 
-        var actions = behaviourObject.BehaviourActions;
+        var actions = behaviourActionBuffer.BehaviourActions;
         for (int i = 0; i < actions.Length; i++)
         {
             var behaviourAction = actions[i];
@@ -582,7 +605,7 @@ public class BehaviourObjectEditor : Editor
 
         if(actionToRemove != null)
         {
-            m_behaviourObject.RemoveAction(actionToRemove);
+            m_currentActionBuffer.Remove(actionToRemove);
 
             AssetDatabase.RemoveObjectFromAsset(actionToRemove);
 
@@ -707,7 +730,11 @@ public class BehaviourObjectEditor : Editor
         {
             foreach(var variable in blackboard.BehaviourVariables)
             {
-                if(actionVariable.ReadMode == IBehaviourActionReadMode.Output && variable.VariableMode == BehaviourVariableMode.Configurable) continue;
+                if( (actionVariable.ReadMode == IBehaviourActionReadMode.Output
+                    && variable.VariableMode == BehaviourVariableMode.Configurable)
+                    || variable.Type != actionVariable.VariableType
+                ) continue;
+
                 variableStringOptions.Add(variable.Name);
                 variableCategorizedOptions.Add(blackboard.name+"/"+variable.Name);
             }
@@ -770,6 +797,12 @@ public class BehaviourObjectEditor : Editor
         EditorGUILayout.BeginHorizontal(m_themeConfig.ActionFieldStyle, GUILayout.Width(width));
 
         EditorGUILayout.LabelField($"{actionBuffer.Name}", GUILayout.Width(m_themeConfig.FieldLabelWidth));
+
+        GUI.backgroundColor = m_themeConfig.Button1Color;
+        if(GUILayout.Button("Open"))
+        {
+            m_currentActionBuffer = actionBuffer;
+        }
 
         EditorGUILayout.EndHorizontal();
     }

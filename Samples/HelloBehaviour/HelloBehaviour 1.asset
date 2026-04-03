@@ -23,8 +23,98 @@ MonoBehaviour:
       m_floatValue: 0
       MultiTypeObjectModem_floatValue: 0
       m_boolValue: 0
-      m_stringValue: Testo
+      m_stringValue: Hello Behaviour
       m_vector2Value: {x: 0, y: 0}
       m_vector3Value: {x: 0, y: 0, z: 0}
       m_colorValue: {r: 0, g: 0, b: 0, a: 0}
     m_variableMode: 1
+  - m_name: RepeatTimes
+    m_multiTypeValue:
+      m_typeMode: 1
+      m_serializedType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      m_objectValue: {fileID: 0}
+      m_intValue: 100
+      m_floatValue: 0
+      MultiTypeObjectModem_floatValue: 0
+      m_boolValue: 0
+      m_stringValue: 
+      m_vector2Value: {x: 0, y: 0}
+      m_vector3Value: {x: 0, y: 0, z: 0}
+      m_colorValue: {r: 0, g: 0, b: 0, a: 0}
+    m_variableMode: 1
+  - m_name: Chance1
+    m_multiTypeValue:
+      m_typeMode: 2
+      m_serializedType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      m_objectValue: {fileID: 0}
+      m_intValue: 0
+      m_floatValue: 100
+      MultiTypeObjectModem_floatValue: 0
+      m_boolValue: 0
+      m_stringValue: 
+      m_vector2Value: {x: 0, y: 0}
+      m_vector3Value: {x: 0, y: 0, z: 0}
+      m_colorValue: {r: 0, g: 0, b: 0, a: 0}
+    m_variableMode: 1
+  - m_name: Chance2
+    m_multiTypeValue:
+      m_typeMode: 2
+      m_serializedType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      m_objectValue: {fileID: 0}
+      m_intValue: 0
+      m_floatValue: 10
+      MultiTypeObjectModem_floatValue: 0
+      m_boolValue: 0
+      m_stringValue: 
+      m_vector2Value: {x: 0, y: 0}
+      m_vector3Value: {x: 0, y: 0, z: 0}
+      m_colorValue: {r: 0, g: 0, b: 0, a: 0}
+    m_variableMode: 1
+  - m_name: Text2
+    m_multiTypeValue:
+      m_typeMode: 4
+      m_serializedType: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      m_objectValue: {fileID: 0}
+      m_intValue: 0
+      m_floatValue: 0
+      MultiTypeObjectModem_floatValue: 0
+      m_boolValue: 0
+      m_stringValue: Hit
+      m_vector2Value: {x: 0, y: 0}
+      m_vector3Value: {x: 0, y: 0, z: 0}
+      m_colorValue: {r: 0, g: 0, b: 0, a: 0}
+    m_variableMode: 1
+  - m_name: TimeDelay
+    m_multiTypeValue:
+      m_typeMode: 2
+      m_serializedType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      m_objectValue: {fileID: 0}
+      m_intValue: 0
+      m_floatValue: 0.1
+      MultiTypeObjectModem_floatValue: 0
+      m_boolValue: 0
+      m_stringValue: 
+      m_vector2Value: {x: 0, y: 0}
+      m_vector3Value: {x: 0, y: 0, z: 0}
+      m_colorValue: {r: 0, g: 0, b: 0, a: 0}
+    m_variableMode: 1
+  - m_name: TimeDelayLeft
+    m_multiTypeValue:
+      m_typeMode: 2
+      m_serializedType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      m_objectValue: {fileID: 0}
+      m_intValue: 0
+      m_floatValue: 0
+      MultiTypeObjectModem_floatValue: 0
+      m_boolValue: 0
+      m_stringValue: 
+      m_vector2Value: {x: 0, y: 0}
+      m_vector3Value: {x: 0, y: 0, z: 0}
+      m_colorValue: {r: 0, g: 0, b: 0, a: 0}
+    m_variableMode: 0

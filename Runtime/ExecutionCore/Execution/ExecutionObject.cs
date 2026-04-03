@@ -9,11 +9,14 @@ namespace com.Sal77.BehaviourExecution
     public class ExecutionObject : IBehaviourExecution
     {
         public BehaviourObject BehaviourObject => m_behaviourObject;
-        [SerializeField] private BehaviourObject m_behaviourObject;
         public ExecutionVariable[] ExecutionVariables => m_executionVariables.ToArray();
-        [SerializeField] private List<ExecutionVariable> m_executionVariables = new();
         public ExecutionAction[] ExecutionActions => m_executionActions.ToArray();
+        public bool Completed => m_completed;
+        [SerializeField] private BehaviourObject m_behaviourObject;
+        [SerializeField] private List<ExecutionVariable> m_executionVariables = new();
         [SerializeField] private List<ExecutionAction> m_executionActions = new();
+        [SerializeField] private int m_executionIndex;
+        [SerializeField] private bool m_completed;
         public ExecutionAction CurrentAction
         {
             get => m_currentAction;
@@ -51,7 +54,16 @@ namespace com.Sal77.BehaviourExecution
 
                 if (m_currentAction.ExecutionResult == ExecutionActionResult.Successful)
                 {
-                    m_currentAction = m_currentAction.NextAction;
+                    m_executionIndex++;
+
+                    if(m_executionIndex < m_executionActions.Count)
+                    {
+                        m_currentAction = m_executionActions[m_executionIndex];
+                    }
+                    else
+                    {
+                        m_completed = true;
+                    }
                 }
             }
         }
@@ -159,7 +171,16 @@ namespace com.Sal77.BehaviourExecution
 
         public void ExecuteActionBuffer(string bufferName)
         {
-            throw new NotImplementedException();//TODO Implement this
+            var actionBuffer = m_currentAction.BehaviourAction.ActionBuffers.FirstOrDefault(x => x.Name == bufferName);
+
+            var i = m_executionIndex+1;
+
+            foreach(var action in actionBuffer.BehaviourActions)
+            {
+                m_executionActions.Insert( i, new(action) );
+
+                i++;
+            }
         }
 
         public void ResetVariable(string variableName)
@@ -178,22 +199,18 @@ namespace com.Sal77.BehaviourExecution
                 }
             }
 
-            Dictionary<BehaviourAction, ExecutionAction> actionCache = new();
+            foreach (var behaviourEvent in m_behaviourObject.BehaviourEvents)
+            {
+                foreach(var variable in behaviourEvent.EventVariables)
+                {
+                    DefineVariable(variable.Name, variable.Type);
+                }
+            }
 
             foreach(var action in m_behaviourObject.BehaviourActions)
             {
                 ExecutionAction executionAction = new ExecutionAction(action);
                 m_executionActions.Add(executionAction);
-                actionCache.Add(action, executionAction);
-            }
-
-            foreach(var actionPair in actionCache)
-            {
-                var nextAction = actionPair.Key.NextAction;
-                if(nextAction != null)
-                {
-                    actionPair.Value.NextAction = actionCache[nextAction];
-                }
             }
         }
 
@@ -204,17 +221,20 @@ namespace com.Sal77.BehaviourExecution
 
         public void Reset(Type eventType, params object[] eventParams)
         {
+            m_executionIndex = 0;
+
             if(eventType != null)
             {
                 var behaviourEvent = m_behaviourObject.BehaviourEvents.FirstOrDefault(x => x.GetType() == eventType);
 
-                //TODO Handle no event
-
-                var eventSourceVariables = behaviourEvent.EventVariables;
-
-                for(int i=0; i<eventParams.Length; i++)
+                if(behaviourEvent != null)
                 {
-                    WriteVariable(eventSourceVariables[i].Name, eventSourceVariables[i].Type, eventParams[i]);
+                    var eventSourceVariables = behaviourEvent.EventVariables;
+
+                    for(int i=0; i<eventParams.Length; i++)
+                    {
+                        WriteVariable(eventSourceVariables[i].Name, eventSourceVariables[i].Type, eventParams[i]);
+                    }
                 }
 
             }

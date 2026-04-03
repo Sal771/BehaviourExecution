@@ -1,5 +1,99 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8116601942250388623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eb0ee343461302489c27c86d1323484, type: 3}
+  m_Name: DebugLogAction_b14e4ff9-83f0-4b1c-9484-c0edfb156e43
+  m_EditorClassIdentifier: com.Sal77.BehaviourExecution.Runtime::DebugLogAction
+  m_nextAction: {fileID: 0}
+  m_actionVariables:
+  - m_orderIndex: 0
+    m_variableName: Text
+    m_serializedVariableType: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+      PublicKeyToken=b77a5c561934e089
+    m_targetVariableName: Text2
+    m_readMode: 0
+  m_actionEnums: []
+  m_actionBuffers: []
+  m_numberOptions: []
+  m_actionGuid: e5e77d6b-182d-40ea-97c9-21ae12be854a
+--- !u!114 &-6511639150376519327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4096e0c9c2b9d5c4b8f4786bf6901747, type: 3}
+  m_Name: ForCycleAction_94d0edd7-071c-4332-a8c4-550aee2a5541
+  m_EditorClassIdentifier: com.Sal77.BehaviourExecution.Runtime::ForCycleAction
+  m_nextAction: {fileID: 0}
+  m_actionVariables:
+  - m_orderIndex: 0
+    m_variableName: Iteration Count
+    m_serializedVariableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+      PublicKeyToken=b77a5c561934e089
+    m_targetVariableName: RepeatTimes
+    m_readMode: 0
+  m_actionEnums: []
+  m_actionBuffers:
+  - m_orderIndex: 1
+    m_behaviourActions:
+    - {fileID: -4145572540168980561}
+    - {fileID: -1847706032380867766}
+    m_name: Loop Actions
+  m_numberOptions: []
+  m_actionGuid: cd86d2a8-b2f8-417f-8695-20b1a943bd57
+--- !u!114 &-4145572540168980561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b75e9e7dbea4f804f9f5ace1a500f8a4, type: 3}
+  m_Name: RandomBranchingAction_7540dbca-1a7b-44d3-8eb0-7257b752a7d1
+  m_EditorClassIdentifier: com.Sal77.BehaviourExecution.Runtime::RandomBranchingAction
+  m_nextAction: {fileID: 0}
+  m_actionVariables:
+  - m_orderIndex: 2
+    m_variableName: Weight 0
+    m_serializedVariableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+      PublicKeyToken=b77a5c561934e089
+    m_targetVariableName: Chance1
+    m_readMode: 0
+  - m_orderIndex: 4
+    m_variableName: Weight 1
+    m_serializedVariableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+      PublicKeyToken=b77a5c561934e089
+    m_targetVariableName: Chance2
+    m_readMode: 0
+  m_actionEnums: []
+  m_actionBuffers:
+  - m_orderIndex: 1
+    m_behaviourActions:
+    - {fileID: 4301340072911842402}
+    m_name: Branch 0
+  - m_orderIndex: 3
+    m_behaviourActions:
+    - {fileID: -8116601942250388623}
+    m_name: Branch 1
+  m_numberOptions:
+  - m_orderIndex: 0
+    m_name: Branch Amount
+    m_value: 2
+  m_actionGuid: 4f871a73-d5aa-4f82-8029-e122a630fe14
 --- !u!114 &-2310285938595582090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24,6 +118,36 @@ MonoBehaviour:
   m_actionBuffers: []
   m_numberOptions: []
   m_actionGuid: b9f08edb-4131-4be0-994e-882ef8ba266f
+--- !u!114 &-1847706032380867766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b913f6fb9037a704184f566b1b5716fc, type: 3}
+  m_Name: WaitSecondsAction_c7ad966a-259b-4204-8991-a16aaccf351f
+  m_EditorClassIdentifier: com.Sal77.BehaviourExecution.Runtime::WaitSecondsAction
+  m_nextAction: {fileID: 0}
+  m_actionVariables:
+  - m_orderIndex: 0
+    m_variableName: WaitSeconds
+    m_serializedVariableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+      PublicKeyToken=b77a5c561934e089
+    m_targetVariableName: TimeDelay
+    m_readMode: 0
+  - m_orderIndex: 1
+    m_variableName: WaitSecondsLeft
+    m_serializedVariableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+      PublicKeyToken=b77a5c561934e089
+    m_targetVariableName: TimeDelayLeft
+    m_readMode: 1
+  m_actionEnums: []
+  m_actionBuffers: []
+  m_numberOptions: []
+  m_actionGuid: 10ed7113-dad6-411e-98e2-72e03513187d
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41,6 +165,31 @@ MonoBehaviour:
     m_orderIndex: 0
     m_behaviourActions:
     - {fileID: -2310285938595582090}
+    - {fileID: -6511639150376519327}
     m_name: Actions
   m_behaviourBlackboards:
   - {fileID: 11400000, guid: d2f658aa6eb384942a2f994ddc5cab56, type: 2}
+--- !u!114 &4301340072911842402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eb0ee343461302489c27c86d1323484, type: 3}
+  m_Name: DebugLogAction_c4400de2-e326-4299-b917-63b8afddd5e7
+  m_EditorClassIdentifier: com.Sal77.BehaviourExecution.Runtime::DebugLogAction
+  m_nextAction: {fileID: 0}
+  m_actionVariables:
+  - m_orderIndex: 0
+    m_variableName: Text
+    m_serializedVariableType: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+      PublicKeyToken=b77a5c561934e089
+    m_targetVariableName: Text
+    m_readMode: 0
+  m_actionEnums: []
+  m_actionBuffers: []
+  m_numberOptions: []
+  m_actionGuid: 27db36c0-e4cf-4e0d-a87e-e3f1b32d7ca3

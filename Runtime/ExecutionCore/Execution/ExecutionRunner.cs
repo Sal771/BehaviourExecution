@@ -12,7 +12,7 @@ namespace com.Sal77.BehaviourExecution
         {
             foreach(var executionObject in m_executionObjects)
             {
-                executionObject.Update();
+                if(!executionObject.Completed) executionObject.Update();
             }
             
         }

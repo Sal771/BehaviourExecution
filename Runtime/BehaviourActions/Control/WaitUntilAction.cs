@@ -1,6 +1,6 @@
 using com.Sal77.BehaviourExecution;
 
-[BehaviourCategory("Control/Wait Seconds")]
+[BehaviourCategory("Control/Wait Until")]
 public class WaitUntilAction : BehaviourAction
 {
     protected override void DefineBindings(IBehaviourAction actionContext)
@@ -10,7 +10,7 @@ public class WaitUntilAction : BehaviourAction
 
     protected override string GetActionName()
     {
-        return "Wait Seconds";
+        return "Wait Until";
     }
 
     public override ExecutionActionResult Execute(IBehaviourExecution executionContext)

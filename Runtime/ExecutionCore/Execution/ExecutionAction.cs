@@ -12,17 +12,7 @@ namespace com.Sal77.BehaviourExecution
         [SerializeField] private BehaviourAction m_behaviourAction;
         public ExecutionActionResult ExecutionResult => m_executionResult;
         [SerializeField] private ExecutionActionResult m_executionResult;
-        public ExecutionAction NextAction
-        {
-            get => m_nextAction;
-            set {
-                if(m_nextAction == null)
-                {
-                    m_nextAction = value;
-                }
-            }
-        }
-        [SerializeReference] private ExecutionAction m_nextAction;
+        
         public ExecutionAction(BehaviourAction behaviourAction)
         {
             m_behaviourAction = behaviourAction;

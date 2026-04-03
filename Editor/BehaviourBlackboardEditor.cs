@@ -196,9 +196,13 @@ public class BehaviourBlackboardEditor : Editor
         if(behaviourVariable.VariableMode == BehaviourVariableMode.Configurable)
         {
             var beforeValue = behaviourVariable.MultiTypeValue.GetValue();
+            var beforeComparable = (IComparable) beforeValue;
             behaviourVariable.MultiTypeValue.DrawField("", GUILayout.ExpandWidth(true));
 
-            if(beforeValue != behaviourVariable.MultiTypeValue.GetValue())
+            var afterValue = behaviourVariable.MultiTypeValue.GetValue();
+
+            //Detecting updates
+            if(beforeValue != afterValue && ( beforeComparable == null || beforeComparable.CompareTo(afterValue) != 0) )
             {
                 EditorUtility.SetDirty(behaviourBlackboard);
                 AssetDatabase.SaveAssets();

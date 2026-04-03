@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+TO fix the bug about behaviourObject not serializing its deeper buffers
+
+## [0.2.4] - 2026-4-3
+
+### Added
+
+-Behaviour Action Buffer full functionality.
+-Behaviour Object Editor supports working with action buffers.
+
+### Changed
+
+- Fixed miscategorizing of Wait until action
+- reworked execution object workflow to work with action buffers
+
+-Fixed asset saving serialization bug.
+
 ## [0.2.3] - 2026-4-2
 
 ### Changed
