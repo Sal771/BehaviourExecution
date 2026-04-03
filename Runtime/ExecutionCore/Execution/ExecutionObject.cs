@@ -169,6 +169,32 @@ namespace com.Sal77.BehaviourExecution
             return variable.Get<T>();
         }
 
+        public int GetNumberOption(string numberName)
+        {
+            var sourceNumberOption = m_currentAction.BehaviourAction.ActionNumberOptions.FirstOrDefault(x => x.Name == numberName);
+        
+            if(sourceNumberOption == null)
+            {
+                Debug.LogWarning($"{m_behaviourObject.name} - Attempted to read number option '{numberName}' not found within action.");
+                return default;
+            }
+
+            return sourceNumberOption.Value;
+        }
+
+        public T GetEnumValue<T>(string enumName)
+        {
+            var sourceEnum = m_currentAction.BehaviourAction.ActionEnums.FirstOrDefault(x => x.Name == enumName);
+        
+            if(sourceEnum == null)
+            {
+                Debug.LogWarning($"{m_behaviourObject.name} - Attempted to read number option '{enumName}' not found within action.");
+                return default;
+            }
+
+            return (T)Enum.ToObject(typeof(T), sourceEnum.CurrentOptionIndex);
+        }
+
         public void ExecuteActionBuffer(string bufferName)
         {
             var actionBuffer = m_currentAction.BehaviourAction.ActionBuffers.FirstOrDefault(x => x.Name == bufferName);

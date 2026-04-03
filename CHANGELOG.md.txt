@@ -6,7 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-TO fix the bug about behaviourObject not serializing its deeper buffers
+To fix the bug about behaviourObject not serializing its deeper buffers
+To fix all the various clunkiness and add more needed base behaviours
+
+## [0.2.5] - 2026-4-3
+
+### Added
+
+- Added more options for the behaviour actions interfaces to handle enums and number options, both in define and execution methods.
+
+### Changed
+
+- Fixed bug where enums and number options would have their values reset unless opened with the editor beforehand.
 
 ## [0.2.4] - 2026-4-3
 

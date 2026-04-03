@@ -20,7 +20,7 @@ public class ExecuteBehaviourObjectAction : BehaviourAction
         var behaviourObject = executionContext.ReadVariable<BehaviourObject>("Behaviour Object");
         var gameObject = executionContext.ReadVariable<GameObject>("Game Object");
 
-        gameObject.GetComponent<ExecutionRunner>()?.Execute(behaviourObject);
+        gameObject.GetComponent<ExecutionRunner>()?.Execute(behaviourObject);//TODO Redesign this
 
         return ExecutionActionResult.Successful;
     }

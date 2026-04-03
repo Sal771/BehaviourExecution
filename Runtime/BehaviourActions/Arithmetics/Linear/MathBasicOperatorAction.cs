@@ -4,8 +4,6 @@ using UnityEngine;
 [BehaviourCategory("Arithmetics/Math Basic Operator")]
 public class MathBasicOperatorAction : BehaviourAction
 {
-    private int m_numberTypeIndex;
-    private int m_operationTypeIndex;
     public enum NumberType
     {
         Int = 0,
@@ -20,9 +18,9 @@ public class MathBasicOperatorAction : BehaviourAction
     }
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        m_numberTypeIndex = actionContext.DeclareEnum<NumberType>("Number Type");
+        var numberType = actionContext.DeclareEnum<NumberType>("Number Type");
 
-        if(m_numberTypeIndex == (int)NumberType.Float)
+        if(numberType == NumberType.Float)
         {
             actionContext.DeclareVariable<float>("Number1", IBehaviourActionReadMode.Input);
             actionContext.DeclareVariable<float>("Number2", IBehaviourActionReadMode.Input);
@@ -33,9 +31,9 @@ public class MathBasicOperatorAction : BehaviourAction
             actionContext.DeclareVariable<int>("Number2", IBehaviourActionReadMode.Input);
         }
         
-        m_operationTypeIndex = actionContext.DeclareEnum<OperationType>("Operation Type");
+        actionContext.DeclareEnum<OperationType>("Operation Type");
 
-        if(m_numberTypeIndex == (int)NumberType.Float)
+        if(numberType == NumberType.Float)
         {
             actionContext.DeclareVariable<float>("Result", IBehaviourActionReadMode.Output);
         }
@@ -47,9 +45,12 @@ public class MathBasicOperatorAction : BehaviourAction
 
     public override ExecutionActionResult Execute(IBehaviourExecution executionContext)
     {
+        var numberType = executionContext.GetEnumValue<NumberType>("Number Type");
+        var operationType = executionContext.GetEnumValue<OperationType>("Operation Type");
+
         float number1 = 0;
 
-        if(m_numberTypeIndex == (int)NumberType.Float)
+        if(numberType == NumberType.Float)
         {
             number1 = executionContext.ReadVariable<float>("Number1");
         }
@@ -60,7 +61,7 @@ public class MathBasicOperatorAction : BehaviourAction
 
         float number2 = 0;
 
-        if(m_numberTypeIndex == (int)NumberType.Float)
+        if(numberType == NumberType.Float)
         {
             number2 = executionContext.ReadVariable<float>("Number1");
         }
@@ -71,7 +72,7 @@ public class MathBasicOperatorAction : BehaviourAction
 
         float result = 0;
 
-        switch ((OperationType)m_operationTypeIndex)
+        switch (operationType)
         {
             case OperationType.Add:
                 result = number1 + number2;
@@ -87,7 +88,7 @@ public class MathBasicOperatorAction : BehaviourAction
                 break;
         }
 
-        if(m_numberTypeIndex == (int)NumberType.Float)
+        if(numberType == NumberType.Float)
         {
             executionContext.WriteVariable<float>("Number1", result);
         }

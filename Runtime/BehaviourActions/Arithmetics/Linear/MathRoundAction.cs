@@ -4,8 +4,6 @@ using UnityEngine;
 [BehaviourCategory("Arithmetics/Math Round")]
 public class MathRoundAction : BehaviourAction
 {
-    private int m_numberTypeIndex;
-    private int m_roundModeIndex;
     public enum NumberType
     {
         Int = 0,
@@ -19,9 +17,9 @@ public class MathRoundAction : BehaviourAction
     }
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
-        m_numberTypeIndex = actionContext.DeclareEnum<NumberType>("Number Type");
+        var numberType = actionContext.DeclareEnum<NumberType>("Number Type");
 
-        if (m_numberTypeIndex == (int)NumberType.Float )
+        if (numberType == NumberType.Float )
         {
             actionContext.DeclareVariable<float>("Number", IBehaviourActionReadMode.Input);
             actionContext.DeclareVariable<float>("Round Interval", IBehaviourActionReadMode.Input);
@@ -32,9 +30,9 @@ public class MathRoundAction : BehaviourAction
             actionContext.DeclareVariable<int>("Round Interval", IBehaviourActionReadMode.Input);
         }
         
-        m_roundModeIndex = actionContext.DeclareEnum<RoundMode>("Round Mode");
+        actionContext.DeclareEnum<RoundMode>("Round Mode");
 
-        if (m_numberTypeIndex == (int)NumberType.Float )
+        if (numberType == NumberType.Float )
         {
             actionContext.DeclareVariable<float>("Output", IBehaviourActionReadMode.Output);
         }
@@ -51,25 +49,35 @@ public class MathRoundAction : BehaviourAction
 
     public override ExecutionActionResult Execute(IBehaviourExecution executionContext)
     {
+        var numberType = executionContext.GetEnumValue<NumberType>("Number Type");
+        var roundMode = executionContext.GetEnumValue<RoundMode>("Round Mode");
+
         var number = executionContext.ReadVariable<float>("Number");
         var roundInterval = executionContext.ReadVariable<float>("Round Interval");
 
         float roundedNumber = 0;
 
-        switch ((RoundMode)m_roundModeIndex)
+        switch (roundMode)
         {
             case RoundMode.Closest:
-                roundedNumber = Mathf.Round(number * (1/roundInterval)) / (1/roundInterval);
+                roundedNumber = Mathf.Round(number / roundInterval) * roundInterval;
             break;
             case RoundMode.RoundUp:
-                roundedNumber = Mathf.Ceil(number * (1/roundInterval)) / (1/roundInterval);
+                roundedNumber = Mathf.Ceil(number / roundInterval) * roundInterval;
             break;
             case RoundMode.RoundDown:
-                roundedNumber = Mathf.Floor(number * (1/roundInterval)) / (1/roundInterval);
+                roundedNumber = Mathf.Floor(number / roundInterval) * roundInterval;
             break;
         }
 
-        executionContext.WriteVariable<float>("Output", roundedNumber);
+        if(numberType == NumberType.Float)
+        {
+            executionContext.WriteVariable<float>("Output", roundedNumber);
+        }
+        else
+        {
+            executionContext.WriteVariable<int>("Output", (int)roundedNumber);
+        }
 
         return ExecutionActionResult.Successful;
     }

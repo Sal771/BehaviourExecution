@@ -103,7 +103,7 @@ namespace com.Sal77.BehaviourExecution
             m_actionFieldsCount++;
         }
 
-        public int DeclareEnum<T>(string name)
+        public T DeclareEnum<T>(string name)
         {
             var behaviourEnum = new BehaviourActionEnum(name, typeof(T));
             behaviourEnum.OrderIndex = m_actionFieldsCount;
@@ -120,7 +120,7 @@ namespace com.Sal77.BehaviourExecution
 
             m_actionFieldsCount++;
 
-            return returnIndex;
+            return (T)Enum.ToObject(typeof(T), returnIndex);;
         }
 
         public void DeclareActionBuffer(string name)
