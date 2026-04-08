@@ -6,6 +6,6 @@ public class HelloBehaviour : MonoBehaviour
     public BehaviourObject BehaviourObject;
     private void Start()
     {
-        GetComponent<ExecutionRunner>().Execute(BehaviourObject);
+        GetComponent<ExecutionRunner>().ExecuteDirectly(BehaviourObject);
     }
 }

@@ -17,21 +17,43 @@ namespace com.Sal77.BehaviourExecution
             
         }
 
-        public void Execute(BehaviourObject behaviourObject)
+        public void ExecuteDirectly(BehaviourObject behaviourObject)
         {
-            Execute(behaviourObject, null);
+            ExecuteDirectly(behaviourObject, null);
         }
-        public void Execute<T>(BehaviourObject behaviourObject, params object[] eventParams)
+        public void ExecuteDirectly<T>(BehaviourObject behaviourObject, params object[] eventParams)
         {
-            Execute(behaviourObject, typeof(T), eventParams);
+            ExecuteDirectly(behaviourObject, typeof(T), eventParams);
         }
-        public void Execute(BehaviourObject behaviourObject, Type eventType, params object[] eventParams)
+        public void ExecuteDirectly(BehaviourObject behaviourObject, Type eventType, params object[] eventParams)
         {
+            if(behaviourObject == null) return;
+
             var executionObject = new ExecutionObject(behaviourObject, eventType, eventParams);
 
             if (executionObject.BehaviourObject.BehaviourActions.Length == 0) return;
             m_executionObjects.Add(executionObject);
             executionObject.Update();
+        }
+        public void AddBehaviour(BehaviourObject behaviourObject)
+        {
+            
+        }
+        public void RemoveBehaviour(BehaviourObject behaviourObject)
+        {
+            
+        }
+        public void RemoveAllBehaviours()
+        {
+            
+        }
+        public void RemoveAllBehaviourOfCategory<T>()
+        {
+            
+        }
+        public void Execute<T>(params object[] eventParams)
+        {
+            
         }
         public void StopExecute(ExecutionObject executionObject)
         {

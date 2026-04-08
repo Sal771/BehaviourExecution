@@ -22,7 +22,7 @@ public abstract class BehaviourStateMachine<EventT, ComponentT> : MonoBehaviour 
 
             var value = GetComponent<ComponentT>();
 
-            m_executionRunner.Execute(m_currentState.BehaviourObject, typeof(EventT), value);
+            m_executionRunner.ExecuteDirectly(m_currentState.BehaviourObject, typeof(EventT), value);
         }
     }
 
