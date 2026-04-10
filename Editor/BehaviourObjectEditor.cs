@@ -475,7 +475,7 @@ public class BehaviourObjectEditor : Editor
 
                     var variableDisplayName = BehaviourUtility.DisplayNameFromType(eventVariable.Type);
 
-                    EditorGUILayout.LabelField($"{behaviourEvent.EventName} [{variableDisplayName}]", GUILayout.Width(m_themeConfig.FieldLabelWidth));
+                    EditorGUILayout.LabelField($"{eventVariable.Name} [{variableDisplayName}]");
 
                 EditorGUILayout.EndHorizontal();
 
