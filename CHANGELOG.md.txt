@@ -9,6 +9,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 To fix the bug about behaviourObject not serializing its deeper buffers
 To fix all the various clunkiness and add more needed base behaviours
 
+## [0.2.6] - 2026-4-13
+
+### Added
+
+- Added Play Animation and Wait Until Animation Signal Actions
+- Added Random Chance Action
+- Added Behaviour Object Behaviour Type
+
+### Changed
+
+- Reworked execution runner 'execute' in hindsight of a more signal driven structure, yet to be implemented.
+- Changed Execution runner direct object behaviour running into 'executeDirectly'
+- Modified WaitUntil and added a buffer action for updating the bool to pool
+- Tried fixing and alleviate the outcome of a bug about the editor tool breaking when working with types that don't have yet a behaviour type defined.
+
 ## [0.2.5] - 2026-4-3
 
 ### Added

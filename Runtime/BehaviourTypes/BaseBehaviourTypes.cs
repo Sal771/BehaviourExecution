@@ -1,3 +1,4 @@
+using com.Sal77.BehaviourExecution;
 using UnityEngine;
 
 [BehaviourTypeCategory("Basic/Integer", "Integer")]
@@ -26,3 +27,6 @@ public class TransformBehaviourType : BehaviourType<Transform>{}
 
 [BehaviourTypeCategory("UnityEngine/Color", "Color")]
 public class ColorBehaviourType : BehaviourType<Color>{}
+
+[BehaviourTypeCategory("Misc/BehaviourObject", "BehaviourObject")]
+public class BehaviourObjectBehaviourType : BehaviourType<BehaviourObject>{}

@@ -6,6 +6,7 @@ public class WaitUntilAction : BehaviourAction
     protected override void DefineBindings(IBehaviourAction actionContext)
     {
         actionContext.DeclareVariable<bool>("Condition Boolean", IBehaviourActionReadMode.Input);
+        actionContext.DeclareActionBuffer("Pool Actions");
     }
 
     protected override string GetActionName()
@@ -15,14 +16,23 @@ public class WaitUntilAction : BehaviourAction
 
     public override ExecutionActionResult Execute(IBehaviourExecution executionContext)
     {
-        executionContext.WriteVariable<bool>("Condition Boolean", false);
+        var conditionBoolean = executionContext.ReadVariable<bool>("Condition Boolean");
+
+        executionContext.ExecuteActionBuffer("Pool Actions");
+
+        if (conditionBoolean)
+        {
+            return ExecutionActionResult.Successful;
+        }
 
         return ExecutionActionResult.Waiting;
     }
     public override bool WaitCondition(IBehaviourExecution executionContext)
     {
-        var pooledBoolean = executionContext.ReadVariable<bool>("Condition Boolean");
+        executionContext.ExecuteActionBuffer("Pool Actions");
 
-        return pooledBoolean;
+        var conditionBoolean = executionContext.ReadVariable<bool>("Condition Boolean");
+
+        return conditionBoolean;
     }
 }

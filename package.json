@@ -1,7 +1,7 @@
 {
   "name": "com.sal77.behaviourexecution",
   "displayName": "Behaviour Execution",
-  "version": "0.2.5-snap.2",
+  "version": "0.2.6",
   "description": "Custom behaviour execution system.",
   "unity": "6000.2",
   "author": {

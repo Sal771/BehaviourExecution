@@ -116,7 +116,7 @@ namespace com.Sal77.BehaviourExecution
             {
                 return type;
             }
-            throw new ArgumentException($"Action '{actionName}' not found");
+            throw new BehaviourEventMissingException($"Behaviour Action by action name '{actionName}' not found");
         }
 
         public static Type EventTypeFromName(string eventName)
@@ -126,7 +126,7 @@ namespace com.Sal77.BehaviourExecution
             {
                 return type;
             }
-            throw new ArgumentException($"Event '{eventName}' not found");
+            throw new BehaviourEventMissingException($"Behaviour Event by event name '{eventName}' not found");
         }
 
         public static BehaviourTypeDescription TypeFromDisplayName(string typeName)
@@ -136,7 +136,7 @@ namespace com.Sal77.BehaviourExecution
             {
                 return typeDescription;
             }
-            throw new ArgumentException($"Type '{typeName}' not found");
+            throw new BehaviourEventMissingException($"Behaviour Type by type name '{typeName}' not found");
         }
 
         public static Type ActionTypeFromCategorized(string actionCategorized)
@@ -146,7 +146,7 @@ namespace com.Sal77.BehaviourExecution
             {
                 return ActionTypeFromName(name);
             }
-            throw new ArgumentException($"Categorized action '{actionCategorized}' not found");
+            throw new BehaviourEventMissingException($"Behaviour action by categorized name '{actionCategorized}' not found");
         }
 
         public static Type EventTypeFromCategorized(string eventCategorized)
@@ -156,7 +156,7 @@ namespace com.Sal77.BehaviourExecution
             {
                 return EventTypeFromName(name);
             }
-            throw new ArgumentException($"Categorized event '{eventCategorized}' not found");
+            throw new BehaviourEventMissingException($"Behaviour event by categorized name '{eventCategorized}' not found");
         }
 
         public static BehaviourTypeDescription TypeFromCategorized(string typeCategorized)
@@ -166,7 +166,7 @@ namespace com.Sal77.BehaviourExecution
             {
                 return TypeFromDisplayName(name);
             }
-            throw new ArgumentException($"Categorized event '{typeCategorized}' not found");
+            throw new BehaviourEventMissingException($"Behaviour event by categorized type '{typeCategorized}' not found");
         }
 
         public static string[] AllAvailableActions()
@@ -208,24 +208,40 @@ namespace com.Sal77.BehaviourExecution
         public static string ActionNameFromCategorized(string categorizedName)
         {
             InitializeActionsCache();
+
+            if(!s_typesCategorizedCache.ContainsKey(categorizedName))
+                throw new BehaviourTypeMissingException($"The Behaviour Type by categorized name '{categorizedName}' does not exist");
+            
             return s_actionsCategorizedCache[categorizedName];
         }
 
         public static string EventNameFromCategorized(string categorizedName)
         {
             InitializeEventsCache();
+
+            if(!s_typesCategorizedCache.ContainsKey(categorizedName))
+                throw new BehaviourTypeMissingException($"The Behaviour Type by categorized name '{categorizedName}' does not exist");
+
             return s_eventsCategorizedCache[categorizedName];
         }
 
         public static string TypeDisplayNameFromCategorized(string categorizedName)
         {
             InitializeTypesCache();
+
+            if(!s_typesCategorizedCache.ContainsKey(categorizedName))
+                throw new BehaviourTypeMissingException($"The Behaviour Type by categorized name '{categorizedName}' does not exist");
+
             return s_typesCategorizedCache[categorizedName];
         }
 
         public static string DisplayNameFromType(Type type)
         {
             InitializeTypesCache();
+
+            if(!s_typeToDisplayNameCache.ContainsKey(type)) 
+                throw new BehaviourTypeMissingException($"The Behaviour Type by type '{type}' does not exist");
+
             return s_typeToDisplayNameCache[type];
         }
     }

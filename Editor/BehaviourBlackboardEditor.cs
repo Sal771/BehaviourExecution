@@ -162,7 +162,16 @@ public class BehaviourBlackboardEditor : Editor
 
         EditorGUILayout.LabelField(behaviourVariable.Name, m_themeConfig.ActionNameStyle);
 
-        EditorGUILayout.LabelField(BehaviourUtility.DisplayNameFromType(behaviourVariable.Type), GUILayout.Width(80));
+        try
+        {
+            EditorGUILayout.LabelField(BehaviourUtility.DisplayNameFromType(behaviourVariable.Type), GUILayout.Width(80));
+        }
+        catch (BehaviourActionMissingException e)
+        {
+            EditorGUILayout.LabelField(e.Message);
+
+            return;
+        }
 
         GUI.backgroundColor = m_themeConfig.Button1Color;
 

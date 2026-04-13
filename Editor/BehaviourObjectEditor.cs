@@ -473,9 +473,16 @@ public class BehaviourObjectEditor : Editor
                 var width = EditorGUIUtility.currentViewWidth * m_themeConfig.FieldWidthRatio;
                 EditorGUILayout.BeginHorizontal(m_themeConfig.ActionFieldStyle, GUILayout.Width(width));
 
-                    var variableDisplayName = BehaviourUtility.DisplayNameFromType(eventVariable.Type);
+                    try
+                    {
+                        var variableDisplayName = BehaviourUtility.DisplayNameFromType(eventVariable.Type);
 
-                    EditorGUILayout.LabelField($"{eventVariable.Name} [{variableDisplayName}]");
+                        EditorGUILayout.LabelField($"{eventVariable.Name} [{variableDisplayName}]");
+                    }
+                    catch (BehaviourEventMissingException e)
+                    {
+                        EditorGUILayout.LabelField(e.Message);
+                    }
 
                 EditorGUILayout.EndHorizontal();
 
@@ -717,7 +724,18 @@ public class BehaviourObjectEditor : Editor
         var width = EditorGUIUtility.currentViewWidth * m_themeConfig.FieldWidthRatio;
         EditorGUILayout.BeginHorizontal(m_themeConfig.ActionFieldStyle, GUILayout.Width(width));
 
-        var variableDisplayName = BehaviourUtility.DisplayNameFromType(actionVariable.VariableType);
+        string variableDisplayName = BehaviourUtility.DisplayNameFromType(actionVariable.VariableType);
+
+        try
+        {
+            variableDisplayName = BehaviourUtility.DisplayNameFromType(actionVariable.VariableType);
+        }
+        catch (BehaviourActionMissingException e)
+        {
+            EditorGUILayout.LabelField(e.Message);
+
+            return;
+        }
 
         EditorGUILayout.LabelField($"{actionVariable.Name} [{variableDisplayName}]", GUILayout.Width(m_themeConfig.FieldLabelWidth));
 
