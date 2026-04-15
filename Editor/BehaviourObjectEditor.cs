@@ -732,7 +732,7 @@ public class BehaviourObjectEditor : Editor
 
             EditorGUILayout.LabelField($"{actionVariable.Name} [{variableDisplayName}]", GUILayout.Width(m_themeConfig.FieldLabelWidth));
         }
-        catch (BehaviourActionMissingException e)
+        catch (BehaviourTypeMissingException e)
         {
             EditorGUILayout.LabelField(e.Message);
 
