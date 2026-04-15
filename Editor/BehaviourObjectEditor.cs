@@ -724,11 +724,13 @@ public class BehaviourObjectEditor : Editor
         var width = EditorGUIUtility.currentViewWidth * m_themeConfig.FieldWidthRatio;
         EditorGUILayout.BeginHorizontal(m_themeConfig.ActionFieldStyle, GUILayout.Width(width));
 
-        string variableDisplayName = BehaviourUtility.DisplayNameFromType(actionVariable.VariableType);
+        string variableDisplayName;
 
         try
         {
             variableDisplayName = BehaviourUtility.DisplayNameFromType(actionVariable.VariableType);
+
+            EditorGUILayout.LabelField($"{actionVariable.Name} [{variableDisplayName}]", GUILayout.Width(m_themeConfig.FieldLabelWidth));
         }
         catch (BehaviourActionMissingException e)
         {
@@ -736,8 +738,6 @@ public class BehaviourObjectEditor : Editor
 
             return;
         }
-
-        EditorGUILayout.LabelField($"{actionVariable.Name} [{variableDisplayName}]", GUILayout.Width(m_themeConfig.FieldLabelWidth));
 
         GUI.backgroundColor = m_themeConfig.Button1Color;
 
