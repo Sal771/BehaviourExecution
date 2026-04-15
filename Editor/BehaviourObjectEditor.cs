@@ -479,7 +479,7 @@ public class BehaviourObjectEditor : Editor
 
                         EditorGUILayout.LabelField($"{eventVariable.Name} [{variableDisplayName}]");
                     }
-                    catch (BehaviourEventMissingException e)
+                    catch (BehaviourTypeMissingException e)
                     {
                         EditorGUILayout.LabelField(e.Message);
                     }
