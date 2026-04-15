@@ -735,8 +735,6 @@ public class BehaviourObjectEditor : Editor
         catch (BehaviourTypeMissingException e)
         {
             EditorGUILayout.LabelField(e.Message);
-
-            return;
         }
 
         GUI.backgroundColor = m_themeConfig.Button1Color;
