@@ -7,6 +7,7 @@ namespace com.Sal77.BehaviourExecution
 {
     public enum IBehaviourActionReadMode{
         Input = 0,
-        Output = 1
+        Output = 1,
+        Buffer = 2
     }
 }

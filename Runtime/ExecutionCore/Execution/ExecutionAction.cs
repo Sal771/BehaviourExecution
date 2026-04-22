@@ -26,5 +26,8 @@ namespace com.Sal77.BehaviourExecution
             var result = m_behaviourAction.WaitCondition(executionContext);
             if(result) m_executionResult = ExecutionActionResult.Successful;
         }
+        public void Reset(){
+            m_executionResult = ExecutionActionResult.Pending;
+        }
     }
 }

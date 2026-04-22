@@ -10,19 +10,21 @@ namespace com.Sal77.BehaviourExecution
     {
         public BehaviourObject BehaviourObject => m_behaviourObject;
         public ExecutionVariable[] ExecutionVariables => m_executionVariables.ToArray();
-        public ExecutionAction[] ExecutionActions => m_executionActions.ToArray();
-        public bool Completed => m_completed;
-        [SerializeField] private BehaviourObject m_behaviourObject;
-        [SerializeField] private List<ExecutionVariable> m_executionVariables = new();
-        [SerializeField] private List<ExecutionAction> m_executionActions = new();
-        [SerializeField] private int m_executionIndex;
-        [SerializeField] private bool m_completed;
         public ExecutionAction CurrentAction
         {
             get => m_currentAction;
             set => m_currentAction = value;   
         }
+        public bool Completed => m_completed;
+        [SerializeField] private BehaviourObject m_behaviourObject;
+        [SerializeField] private List<ExecutionVariable> m_executionVariables = new();
+        public Dictionary<BehaviourActionBuffer, List<ExecutionAction>> m_executionActions = new();
+        [SerializeField] private Stack<BehaviourActionBuffer> m_executingBuffers = new();
+        [SerializeField] private Stack<int> m_executingBuffersIndex = new();
         [SerializeReference] private ExecutionAction m_currentAction;
+        [SerializeReference] private BehaviourActionBuffer m_currentBuffer;
+        [SerializeField] private int m_executionIndex;
+        [SerializeField] private bool m_completed;
 
         public ExecutionObject(BehaviourObject behaviourObject)
         {
@@ -56,14 +58,38 @@ namespace com.Sal77.BehaviourExecution
                 {
                     m_executionIndex++;
 
-                    if(m_executionIndex < m_executionActions.Count)
+                    if(m_executionIndex < m_executionActions[m_currentBuffer].Count)
                     {
-                        m_currentAction = m_executionActions[m_executionIndex];
+                        m_currentAction = m_executionActions[m_currentBuffer][m_executionIndex];
                     }
                     else
                     {
-                        m_completed = true;
+                        if(m_executingBuffers.Count > 0)
+                        {
+                            GoToPreviousBuffer();
+                        } 
+                        else
+                        {
+                            m_completed = true;
+                        }
                     }
+                }
+            }
+        }
+
+        public void GoToPreviousBuffer()
+        {
+            if(m_executingBuffers.Count > 0)
+            {
+                m_currentBuffer = m_executingBuffers.Pop();
+                m_executionIndex = m_executingBuffersIndex.Pop();
+                if(m_executionActions[m_currentBuffer].Count < m_executionIndex)
+                {
+                    m_currentAction = m_executionActions[m_currentBuffer][m_executionIndex];
+                }
+                else
+                {
+                    GoToPreviousBuffer();
                 }
             }
         }
@@ -199,13 +225,19 @@ namespace com.Sal77.BehaviourExecution
         {
             var actionBuffer = m_currentAction.BehaviourAction.ActionBuffers.FirstOrDefault(x => x.Name == bufferName);
 
-            var i = m_executionIndex+1;
+            if(actionBuffer.BehaviourActions.Count() <= 0) return;
 
-            foreach(var action in actionBuffer.BehaviourActions)
+            m_executingBuffers.Push(m_currentBuffer);
+            m_executingBuffersIndex.Push(m_executionIndex);
+
+            m_currentBuffer = actionBuffer;
+            m_executionIndex = 0;
+
+            m_currentAction = m_executionActions[actionBuffer][0];
+
+            foreach(var executionAction in m_executionActions[actionBuffer])
             {
-                m_executionActions.Insert( i, new(action) );
-
-                i++;
+                executionAction.Reset();
             }
         }
 
@@ -235,8 +267,31 @@ namespace com.Sal77.BehaviourExecution
 
             foreach(var action in m_behaviourObject.BehaviourActions)
             {
+                if (!m_executionActions.ContainsKey(m_behaviourObject.BehaviourActionBuffer))
+                {
+                    m_executionActions[m_behaviourObject.BehaviourActionBuffer] = new();
+                }
+
                 ExecutionAction executionAction = new ExecutionAction(action);
-                m_executionActions.Add(executionAction);
+                m_executionActions[m_behaviourObject.BehaviourActionBuffer].Add(executionAction);
+                AddActionRecursive(action);
+            }
+        }
+
+        public void AddActionRecursive(BehaviourAction behaviourAction)
+        {
+            foreach(var buffer in behaviourAction.ActionBuffers)
+            {
+                if (!m_executionActions.ContainsKey(buffer))
+                {
+                    m_executionActions[buffer] = new();
+                }
+                foreach(var action in buffer.BehaviourActions)
+                {
+                    ExecutionAction executionAction = new ExecutionAction(action);
+                    m_executionActions[buffer].Add(executionAction);
+                    AddActionRecursive(action);
+                }
             }
         }
 
@@ -280,9 +335,10 @@ namespace com.Sal77.BehaviourExecution
                 }
             }
 
-            if (m_executionActions.Count > 0)
+            if (m_executionActions[BehaviourObject.BehaviourActionBuffer].Count > 0)
             {
-                m_currentAction = m_executionActions[0];
+                m_currentBuffer = BehaviourObject.BehaviourActionBuffer;
+                m_currentAction = m_executionActions[m_currentBuffer][0];
             }
         }
     }
