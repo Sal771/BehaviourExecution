@@ -23,7 +23,7 @@ namespace com.Sal77.BehaviourExecution
                 }
                 else
                 {
-                    //objectsToRemove.Add(executionObject);
+                    objectsToRemove.Add(executionObject);
                 }
             }
 

@@ -44,9 +44,15 @@ MonoBehaviour:
       PublicKeyToken=b77a5c561934e089
     m_targetVariableName: RepeatTimes
     m_readMode: 0
+  - m_orderIndex: 1
+    m_variableName: Iterated Times
+    m_serializedVariableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+      PublicKeyToken=b77a5c561934e089
+    m_targetVariableName: 
+    m_readMode: 2
   m_actionEnums: []
   m_actionBuffers:
-  - m_orderIndex: 1
+  - m_orderIndex: 2
     m_behaviourActions:
     - {fileID: -4145572540168980561}
     - {fileID: -1847706032380867766}

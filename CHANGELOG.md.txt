@@ -6,8 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-To fix the bug about behaviourObject not serializing its deeper buffers
-To fix all the various clunkiness and add more needed base behaviours
+## [0.2.7] - 2026-4-13
+
+### Changed
+
+- ForCycleAction Logic
+- Execution Runner and Execution Object Running Logic to better support repetition
+- Execution Object no longer creates actions and instead uses a dictionary map and stack for navigation when executing buffers
 
 ## [0.2.6] - 2026-4-13
 
