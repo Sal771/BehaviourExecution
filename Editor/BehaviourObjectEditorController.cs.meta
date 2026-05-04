@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: bf1d57d00d3013d46b13fafa0f6e9b91
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - m_visualTreeAsset: {fileID: 9197481963319205126, guid: 96a2731c6d71bbf498987fbed0df4c55, type: 3}
+  - m_behaviourActionAsset: {fileID: 9197481963319205126, guid: 017751335acc86f4cad05acdd2b48ba7, type: 3}
+  - m_fieldRowAsset: {fileID: 9197481963319205126, guid: 649ef4aefc952cc4db32620072b00114, type: 3}
+  - m_variableFieldAsset: {fileID: 9197481963319205126, guid: 0139e834e01dc734aa255eefaa9b1724, type: 3}
+  - m_numberOptionFieldAsset: {fileID: 9197481963319205126, guid: c656ce6fb347a564f8c0f1ec6d73a24b, type: 3}
+  - m_enumFieldAsset: {fileID: 9197481963319205126, guid: 6f110e75f5df33b4893d5e7d405964a8, type: 3}
+  - m_actionBufferAsset: {fileID: 9197481963319205126, guid: cd398b9e98161bc4d9884aec77d7b5ca, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

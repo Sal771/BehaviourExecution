@@ -1,0 +1,25 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/com.sal77.behaviourexecution/Resources/BehaviourStyle.uss?fileID=7433441132597879392&amp;guid=bcc586993c0f5594aaea9269b33543b5&amp;type=3#BehaviourStyle"/>
+    <ui:VisualElement name="BehaviourObjectFrame" style="flex-grow: 0; background-color: rgb(63, 33, 33); padding-top: 4px; padding-left: 4px; padding-bottom: 4px; padding-right: 4px;">
+        <ui:Label data-source-type="com.Sal77.BehaviourExecution.BehaviourObject, com.Sal77.BehaviourExecution.Runtime" name="BehaviourName" data-source="" data-source-path="" view-data-key="" text="BehaviourName" class="behaviour-text-element-bold"/>
+        <ui:VisualElement name="Tutorial" style="flex-grow: 0; background-color: rgb(118, 60, 60); border-left-color: rgb(99, 49, 49); border-right-color: rgb(99, 49, 49); border-top-color: rgb(99, 49, 49); border-bottom-color: rgb(99, 49, 49); border-top-width: 4px; border-right-width: 4px; border-bottom-width: 4px; border-left-width: 4px; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px;">
+            <ui:Toggle label="Tutorial" name="TutorialToggle"/>
+            <ui:VisualElement name="TutorialFrame" style="flex-grow: 1; background-color: rgb(63, 33, 33); margin-right: 16px; margin-left: 0; border-top-width: 4px; border-right-width: 4px; border-bottom-width: 4px; border-left-width: 4px; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; border-left-color: rgb(99, 49, 49); border-right-color: rgb(99, 49, 49); border-top-color: rgb(99, 49, 49); border-bottom-color: rgb(99, 49, 49);">
+                <ui:Label text="Tutorial Instructions To Write" style="font-size: 9px; -unity-font-style: normal; -unity-font-definition: resource(&quot;FlatSkin/Font/Roboto-Light&quot;);"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="ActionBufferInfo" style="flex-grow: 1; background-color: rgb(138, 43, 226); margin-top: 12px; border-top-width: 4px; border-right-width: 4px; border-bottom-width: 4px; border-left-width: 4px; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; border-left-color: rgb(75, 0, 130); border-right-color: rgb(75, 0, 130); border-top-color: rgb(75, 0, 130); border-bottom-color: rgb(75, 0, 130); flex-direction: row;">
+            <ui:Label text="Currently Editing Action Buffer: [{ActionBufferName}]" name="ActionBufferInfoName" class="behaviour-text-element-bold" style="color: rgb(255, 255, 255);"/>
+            <ui:VisualElement style="flex-grow: 1;"/>
+            <ui:Button text="Exit" name="ExitBufferButton"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="Toolbox" style="flex-grow: 0; background-color: rgb(118, 60, 60); flex-direction: row; margin-top: 4px; margin-bottom: 0; border-top-width: 4px; border-right-width: 4px; border-bottom-width: 4px; border-left-width: 4px; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; border-left-color: rgb(99, 49, 49); border-right-color: rgb(99, 49, 49); border-top-color: rgb(99, 49, 49); border-bottom-color: rgb(99, 49, 49); padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px;">
+            <ui:DropdownField label="Dropdown" name="ActionPopup" style="flex-grow: 1; padding-right: 8px; padding-left: 0;"/>
+            <ui:Button text="Add" name="AddButton" enabled="true"/>
+            <ui:VisualElement style="flex-grow: 1;"/>
+            <ui:Button text="Copy" name="Copy" enabled="false"/>
+            <ui:Button text="Paste" name="Paste" enabled="false"/>
+        </ui:VisualElement>
+        <ui:GroupBox name="ActionContainer" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;"/>
+    </ui:VisualElement>
+</ui:UXML>

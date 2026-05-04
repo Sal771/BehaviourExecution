@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.sal77.behaviourexecution/Resources/BehaviourStyle.uss?fileID=7433441132597879392&amp;guid=bcc586993c0f5594aaea9269b33543b5&amp;type=3#BehaviourStyle"/>
+    <ui:VisualElement name="VariableFieldFrame" class="behaviour-field" style="flex-grow: 0; background-color: rgb(65, 105, 225); border-top-width: 4px; border-right-width: 4px; border-bottom-width: 4px; border-left-width: 4px; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; border-left-color: rgb(0, 0, 205); border-right-color: rgb(0, 0, 205); border-top-color: rgb(0, 0, 205); border-bottom-color: rgb(0, 0, 205);">
+        <ui:Label text="Label" name="FieldName"/>
+        <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
+            <ui:IntegerField label="" value="42" name="NumberOption" style="flex-grow: 1;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

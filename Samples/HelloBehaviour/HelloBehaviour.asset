@@ -44,15 +44,9 @@ MonoBehaviour:
       PublicKeyToken=b77a5c561934e089
     m_targetVariableName: RepeatTimes
     m_readMode: 0
-  - m_orderIndex: 1
-    m_variableName: Iterated Times
-    m_serializedVariableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-      PublicKeyToken=b77a5c561934e089
-    m_targetVariableName: 
-    m_readMode: 2
   m_actionEnums: []
   m_actionBuffers:
-  - m_orderIndex: 2
+  - m_orderIndex: 1
     m_behaviourActions:
     - {fileID: -4145572540168980561}
     - {fileID: -1847706032380867766}
@@ -166,15 +160,69 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53bef4d781274ac479a356bf5e5e53f1, type: 3}
   m_Name: HelloBehaviour
   m_EditorClassIdentifier: com.Sal77.BehaviourExecution.Runtime::com.Sal77.BehaviourExecution.BehaviourObject
+  m_behaviourName: HelloBehaviour
   m_behaviourEvents: []
   m_behaviourActionBuffer:
     m_orderIndex: 0
     m_behaviourActions:
     - {fileID: -2310285938595582090}
     - {fileID: -6511639150376519327}
+    - {fileID: 0}
+    - {fileID: 6127987443506986305}
+    - {fileID: 525218682740631565}
     m_name: Actions
   m_behaviourBlackboards:
   - {fileID: 11400000, guid: d2f658aa6eb384942a2f994ddc5cab56, type: 2}
+--- !u!114 &525218682740631565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ec756685e33d6a4abd96ccb6f7412bb, type: 3}
+  m_Name: MathBasicOperatorAction_ebaf2807-5763-4772-824f-c09a8451caeb
+  m_EditorClassIdentifier: com.Sal77.BehaviourExecution.Runtime::MathBasicOperatorAction
+  m_nextAction: {fileID: 0}
+  m_actionVariables:
+  - m_orderIndex: 1
+    m_variableName: Number1
+    m_serializedVariableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+      PublicKeyToken=b77a5c561934e089
+    m_targetVariableName: 
+    m_readMode: 0
+  - m_orderIndex: 2
+    m_variableName: Number2
+    m_serializedVariableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+      PublicKeyToken=b77a5c561934e089
+    m_targetVariableName: 
+    m_readMode: 0
+  - m_orderIndex: 4
+    m_variableName: Result
+    m_serializedVariableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+      PublicKeyToken=b77a5c561934e089
+    m_targetVariableName: 
+    m_readMode: 1
+  m_actionEnums:
+  - m_orderIndex: 0
+    m_name: Number Type
+    m_options:
+    - Int
+    - Float
+    m_currentOptionIndex: 1
+  - m_orderIndex: 3
+    m_name: Operation Type
+    m_options:
+    - Add
+    - Sub
+    - Mult
+    - Div
+    m_currentOptionIndex: 1
+  m_actionBuffers: []
+  m_numberOptions: []
+  m_actionGuid: fc4d183f-c5cc-48ad-8f1b-fc5b51fb96e8
 --- !u!114 &4301340072911842402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,3 +247,33 @@ MonoBehaviour:
   m_actionBuffers: []
   m_numberOptions: []
   m_actionGuid: 27db36c0-e4cf-4e0d-a87e-e3f1b32d7ca3
+--- !u!114 &6127987443506986305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b75e9e7dbea4f804f9f5ace1a500f8a4, type: 3}
+  m_Name: RandomBranchingAction_08bc4f8e-b05a-4ca9-8f1b-5ffa03f84b56
+  m_EditorClassIdentifier: com.Sal77.BehaviourExecution.Runtime::RandomBranchingAction
+  m_nextAction: {fileID: 0}
+  m_actionVariables:
+  - m_orderIndex: 2
+    m_variableName: Weight 0
+    m_serializedVariableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+      PublicKeyToken=b77a5c561934e089
+    m_targetVariableName: 
+    m_readMode: 0
+  m_actionEnums: []
+  m_actionBuffers:
+  - m_orderIndex: 1
+    m_behaviourActions: []
+    m_name: Branch 0
+  m_numberOptions:
+  - m_orderIndex: 0
+    m_name: Branch Amount
+    m_value: 1
+  m_actionGuid: c855cd04-d96b-4a02-8ff0-eb2a08656562

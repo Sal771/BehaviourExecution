@@ -1,0 +1,37 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.sal77.behaviourexecution/Resources/BehaviourStyle.uss?fileID=7433441132597879392&amp;guid=bcc586993c0f5594aaea9269b33543b5&amp;type=3#BehaviourBlackboardEditorStyle"/>
+    <ui:VisualElement name="MainFrame" style="flex-grow: 0; background-color: rgb(63, 33, 33); padding-top: 4px; padding-left: 4px; padding-bottom: 4px; padding-right: 4px;">
+        <ui:Label text="{BehaviourName}" data-source-type="com.Sal77.BehaviourExecution.BehaviourObject, com.Sal77.BehaviourExecution.Runtime" name="BehaviourName" style="-unity-font-definition: resource(&quot;FlatSkin/Font/Roboto-Black&quot;); color: rgb(255, 255, 255);"/>
+        <ui:VisualElement name="Tutorial" style="flex-grow: 0; background-color: rgb(118, 60, 60);">
+            <ui:Foldout text="Tutorial" class="behaviour-header-foldout" style="color: rgb(255, 255, 255); -unity-font-definition: resource(&quot;FlatSkin/Font/Roboto-Black&quot;);">
+                <ui:VisualElement style="flex-grow: 1; background-color: rgb(63, 33, 33); margin-right: 16px; margin-left: 0;">
+                    <ui:Label text="Tutorial Instructions To Write" style="font-size: 9px; -unity-font-style: normal; -unity-font-definition: resource(&quot;FlatSkin/Font/Roboto-Light&quot;);"/>
+                </ui:VisualElement>
+            </ui:Foldout>
+        </ui:VisualElement>
+        <ui:VisualElement name="ActionBufferInfo" style="flex-grow: 1; background-color: rgb(102, 51, 153); margin-top: 12px;">
+            <ui:Label text="Currently Editing Action Buffer: [{ActionBufferName}]" name="ActionBufferInfoName" style="color: rgb(255, 255, 255); -unity-font-definition: resource(&quot;FlatSkin/Font/Roboto-Black&quot;);"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="Toolbox" style="flex-grow: 0; background-color: rgb(118, 60, 60); flex-direction: row; margin-top: 4px; margin-bottom: 0;">
+            <ui:EnumField label="Enum" value="Center" type="UnityEngine.TextAlignment, UnityEngine.TextRenderingModule" style="width: 200px;"/>
+            <ui:Button text="Add" name="Add" enabled="true"/>
+            <ui:Button text="Copy" name="Copy"/>
+            <ui:Button text="Paste" name="Paste"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="Content" style="flex-grow: 0; background-color: rgb(118, 60, 60); margin-top: 4px; margin-bottom: 0;">
+            <ui:VisualElement name="ActionFrame" style="flex-grow: 1; background-color: rgb(165, 66, 66);">
+                <ui:Label text="{ActionName}" name="ActionName" style="color: rgb(255, 255, 255); -unity-font-definition: resource(&quot;FlatSkin/Font/Roboto-Black&quot;);"/>
+                <ui:VisualElement name="ActionFieldRow" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="FieldFrame" style="flex-grow: 0; width: 40%; margin-right: 5%; margin-left: 5%;">
+                        <ui:DropdownField label="{FieldName}" choices="Test,Test2,Test3" index="0"/>
+                        <ui:VisualElement style="flex-grow: 1;"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="FieldFrame" style="flex-grow: 0; width: 40%; margin-right: 5%; margin-left: 5%;">
+                        <ui:DropdownField label="{FieldName}" choices="Test,Test2,Test3" index="0"/>
+                        <ui:VisualElement style="flex-grow: 1;"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

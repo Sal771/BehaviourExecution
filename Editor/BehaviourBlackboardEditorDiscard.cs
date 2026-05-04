@@ -6,7 +6,6 @@ using UnityEditor;
 using com.Sal77.BehaviourExecution;
 using System.IO;
 
-[CustomEditor(typeof(BehaviourBlackboard))]
 public class BehaviourBlackboardEditor : Editor
 {
     private bool m_instructionsFoldout;

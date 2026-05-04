@@ -7,10 +7,8 @@ using com.Sal77.BehaviourExecution;
 using System.IO;
 
 //TODO variable renaming
-//TODO variable selection
 //TODO Section title foldout
 
-[CustomEditor(typeof(BehaviourObject))]
 public class BehaviourObjectEditor : Editor
 {
     private bool m_instructionsFoldout;
@@ -20,7 +18,6 @@ public class BehaviourObjectEditor : Editor
     private BehaviourExecutionThemeConfig m_themeConfig;
     private BehaviourObject m_behaviourObject;
     private BehaviourActionBuffer m_currentActionBuffer;
-    private BehaviourAction m_currentAction;
 
     public class BehaviourActionDrag
     {
@@ -364,12 +361,6 @@ public class BehaviourObjectEditor : Editor
 
             EditorGUILayout.EndVertical();
 
-            if (BehaviourEditorUtility.LastRectClicked())
-            {
-                DragAndDrop.SetGenericData("Behaviour Event Drag", null);
-                this.Repaint();
-            }
-
             if (BehaviourEditorUtility.LastRectDragStart())
             {
                 DragAndDrop.PrepareStartDrag();
@@ -540,6 +531,11 @@ public class BehaviourObjectEditor : Editor
 
             if (BehaviourEditorUtility.LastRectClicked())
             {
+                Debug.Log("AURA BEAAAAAMU");
+                if (Event.current.shift)
+                {
+                    Debug.Log("Lets getta started");
+                }
                 DragAndDrop.SetGenericData("Behaviour Action Drag", null);
                 this.Repaint();
             }
@@ -718,6 +714,7 @@ public class BehaviourObjectEditor : Editor
         return null;
     }
 
+    //TODO DO THIS
     private void DrawActionVariable(BehaviourActionVariable actionVariable)
     {
         GUI.backgroundColor = m_themeConfig.ActionFieldVariableBackgroundColor;

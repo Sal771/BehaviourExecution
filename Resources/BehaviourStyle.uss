@@ -1,0 +1,309 @@
+.unity-text-element {
+    color: rgb(255, 255, 255);
+    -unity-font-definition: resource("FlatSkin/Font/Roboto-Black");
+    font-size: 10px;
+    margin-top: 0;
+    margin-right: 2px;
+    margin-bottom: 0;
+    margin-left: 2px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+.unity-base-field__label {
+    color: rgb(255, 255, 255);
+    width: 80px;
+    min-width: 50px;
+    -unity-font-definition: resource("FlatSkin/Font/Roboto-Bold");
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    padding-top: 0;
+    -unity-text-align: middle-left;
+    margin-left: 0;
+    padding-left: 0;
+    padding-right: 0;
+    margin-right: 0;
+}
+
+.unity-base-field__input {
+    color: rgb(255, 255, 255);
+    width: 30px;
+    min-width: 50px;
+    -unity-font-definition: resource("FlatSkin/Font/Roboto-Bold");
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    padding-top: 0;
+    -unity-text-align: middle-left;
+    margin-left: 0;
+    padding-left: 0;
+    padding-right: 0;
+    margin-right: 0;
+    background-color: rgb(215, 172, 132);
+    border-left-color: rgb(242, 209, 178);
+    border-right-color: rgb(242, 209, 178);
+    border-top-color: rgb(242, 209, 178);
+    border-bottom-color: rgb(242, 209, 178);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    height: 18px;
+}
+
+.unity-base-popup-field__text {
+    font-size: 10px;
+    -unity-font-definition: resource("FlatSkin/Font/Roboto-Light");
+    color: rgb(255, 255, 255);
+}
+
+.unity-base-popup-field__arrow {
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}
+
+.unity-base-field {
+    height: 18px;
+    margin-top: 2px;
+    margin-right: 2px;
+    margin-bottom: 2px;
+    margin-left: 2px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+.unity-enum-field {
+    margin-top: 2px;
+    padding-top: 0;
+    padding-right: 4px;
+    margin-right: 2px;
+    padding-bottom: 0;
+    margin-bottom: 2px;
+    padding-left: 0;
+    margin-left: 2px;
+}
+
+.unity-enum-field__text {
+    padding-right: 4px;
+    padding-left: 0;
+    margin-right: 0;
+    margin-left: 0;
+    padding-top: 0;
+    margin-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    color: rgb(255, 255, 255);
+    -unity-font-style: normal;
+    -unity-text-align: middle-left;
+    font-size: 10px;
+    -unity-font-definition: resource("FlatSkin/Font/Roboto-Light");
+}
+
+.unity-base-popup-field {
+    padding-right: 4px;
+}
+
+.unity-base-popup-field:hover .unity-base-popup-field__input {
+    scale: 1.02 1.05;
+    background-color: rgb(247, 191, 117);
+    border-left-color: rgb(249, 239, 216);
+    border-right-color: rgb(249, 239, 216);
+    border-top-color: rgb(249, 239, 216);
+    border-bottom-color: rgb(249, 239, 216);
+    padding-right: 4px;
+}
+
+.unity-button {
+    -unity-font-definition: resource("FlatSkin/Font/Roboto-Light");
+    color: rgb(255, 255, 255);
+    border-left-color: rgb(242, 209, 178);
+    border-right-color: rgb(242, 209, 178);
+    border-top-color: rgb(242, 209, 178);
+    border-bottom-color: rgb(242, 209, 178);
+    border-bottom-right-radius: 8px;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-left-width: 2px;
+    background-color: rgb(215, 172, 132);
+    -unity-text-align: middle-center;
+    padding-right: 4px;
+    padding-top: 2px;
+    margin-top: 2px;
+    padding-bottom: 2px;
+    margin-bottom: 2px;
+    margin-right: 2px;
+    padding-left: 4px;
+    margin-left: 2px;
+    height: 18px;
+    transition-property: all;
+    transition-duration: 0s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+}
+
+.unity-button:hover {
+    background-color: rgb(247, 191, 117);
+    border-left-color: rgb(249, 239, 216);
+    border-right-color: rgb(249, 239, 216);
+    border-top-color: rgb(249, 239, 216);
+    border-bottom-color: rgb(249, 239, 216);
+    scale: 1.02 1.05;
+}
+
+.unity-button:active {
+    background-color: rgb(247, 219, 117);
+    border-left-color: rgb(253, 252, 236);
+    border-right-color: rgb(253, 252, 236);
+    border-top-color: rgb(253, 252, 236);
+    border-bottom-color: rgb(253, 252, 236);
+    scale: 1.1 1.1;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+.behaviour-text-element-bold {
+    -unity-font-definition: resource("FlatSkin/Font/Roboto-Black");
+    font-size: 14px;
+    -unity-text-align: middle-left;
+}
+
+.behaviour-field {
+    width: 40%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 0;
+    padding-top: 2px;
+    padding-right: 2px;
+    padding-bottom: 2px;
+    padding-left: 2px;
+}
+
+.unity-toggle {
+    flex-grow: 0;
+}
+
+.unity-toggle__input {
+    background-color: rgb(215, 172, 132);
+    border-left-color: rgb(242, 209, 178);
+    border-right-color: rgb(242, 209, 178);
+    border-top-color: rgb(242, 209, 178);
+    border-bottom-color: rgb(242, 209, 178);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    flex-grow: 0;
+    scale: 1 1;
+    min-width: 18px;
+    min-height: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.unity-toggle__checkmark {
+    background-color: rgba(215, 172, 132, 0);
+    border-left-color: rgba(242, 209, 178, 0);
+    border-right-color: rgba(242, 209, 178, 0);
+    border-top-color: rgba(242, 209, 178, 0);
+    border-bottom-color: rgba(242, 209, 178, 0);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    -unity-text-generator: standard;
+    width: 24px;
+    height: 24px;
+    translate: -2px 0;
+}
+
+.unity-base-text-field {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-left-color: rgb(242, 209, 178);
+    border-right-color: rgb(242, 209, 178);
+    border-top-color: rgb(242, 209, 178);
+    border-bottom-color: rgb(242, 209, 178);
+    background-color: rgb(118, 60, 60);
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+.unity-base-text-field__input {
+    border-left-color: rgba(215, 172, 132, 0);
+    border-right-color: rgba(215, 172, 132, 0);
+    border-top-color: rgba(215, 172, 132, 0);
+    border-bottom-color: rgba(215, 172, 132, 0);
+    background-color: rgba(99, 49, 49, 0);
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+}
+
+.unity-text-element--inner-input-field-component {
+    margin-top: -2px;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    -unity-text-align: upper-left;
+}
+
+.unity-base-popup-field:hover .unity-base-popup-field__arrow {
+    translate: 4px 0;
+}

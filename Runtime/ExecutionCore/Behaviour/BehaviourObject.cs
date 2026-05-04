@@ -15,9 +15,15 @@ namespace com.Sal77.BehaviourExecution
         public BehaviourAction[] BehaviourActions => m_behaviourActionBuffer.BehaviourActions;
         public BehaviourActionBuffer BehaviourActionBuffer => m_behaviourActionBuffer;
         public BehaviourBlackboard[] BehaviourBlackboards => m_behaviourBlackboards.ToArray();
+        [SerializeField] private string m_behaviourName;
         [SerializeReference] private List<BehaviourEvent> m_behaviourEvents = new();
         [SerializeField] private BehaviourActionBuffer m_behaviourActionBuffer = new("Actions");
         [SerializeReference] private List<BehaviourBlackboard> m_behaviourBlackboards = new();
+
+        private void OnValidate()
+        {
+            m_behaviourName = name;
+        }
 
         public void AddAction(BehaviourAction behaviourAction)
         {

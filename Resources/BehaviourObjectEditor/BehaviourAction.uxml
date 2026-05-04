@@ -1,0 +1,10 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.sal77.behaviourexecution/Resources/BehaviourStyle.uss?fileID=7433441132597879392&amp;guid=bcc586993c0f5594aaea9269b33543b5&amp;type=3#BehaviourStyle"/>
+    <ui:VisualElement name="ActionFrame" style="flex-grow: 0; background-color: rgb(165, 66, 66); margin-top: 4px; padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px; border-left-color: rgb(139, 0, 0); border-right-color: rgb(139, 0, 0); border-top-color: rgb(139, 0, 0); border-bottom-color: rgb(139, 0, 0); border-top-width: 4px; border-right-width: 4px; border-bottom-width: 4px; border-left-width: 4px; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px;">
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+            <ui:Label text="{ActionName}" name="ActionName" style="color: rgb(255, 255, 255); -unity-font-definition: resource(&quot;FlatSkin/Font/Roboto-Black&quot;); flex-grow: 1; -unity-text-align: middle-left;"/>
+            <ui:Button text="X" name="RemoveButton"/>
+        </ui:VisualElement>
+        <ui:GroupBox name="FieldRowContainer" style="margin-top: 0; margin-right: 4px; margin-bottom: 0; margin-left: 4px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;"/>
+    </ui:VisualElement>
+</ui:UXML>
